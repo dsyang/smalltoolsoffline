@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="description" content="Offline viewer for code.imdaniel.fyi tools" />
+  <title>Small Tools Offline</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap');
+
+    :root {
+      --bg: #0e0f11;
+      --surface: #1a1b1f;
+      --surface-hover: #222328;
+      --border: #2a2b30;
+      --text: #e4e4e7;
+      --text-muted: #8b8b94;
+      --accent: #6ee7b7;
+      --accent-dim: rgba(110, 231, 183, 0.12);
+      --danger: #f87171;
+      --danger-dim: rgba(248, 113, 113, 0.12);
+      --radius: 14px;
+      --safe-top: env(safe-area-inset-top, 0px);
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'DM Sans', -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      -webkit-user-select: none;
+      user-select: none;
+      padding-top: var(--safe-top);
+      padding-bottom: var(--safe-bottom);
+    }
+
+    .header {
+      padding: 20px 20px 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    .header h1 { font-size: 22px; font-weight: 600; letter-spacing: -0.3px; }
+    .header p { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
+
+    .sync-bar { padding: 16px 20px; }
+    .sync-btn {
+      width: 100%; padding: 14px;
+      border: 1px solid var(--border); border-radius: var(--radius);
+      background: var(--surface); color: var(--text);
+      font-family: inherit; font-size: 15px; font-weight: 500;
+      cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .sync-btn:active { background: var(--surface-hover); border-color: var(--accent); }
+    .sync-btn.syncing { opacity: 0.6; pointer-events: none; }
+    .sync-btn .icon { font-size: 18px; }
+    .sync-btn.syncing .icon { animation: spin 1s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .status { padding: 0 20px 12px; font-size: 12px; color: var(--text-muted); min-height: 20px; }
+    .status.error { color: var(--danger); }
+
+    .tools-list { padding: 0 20px 100px; display: flex; flex-direction: column; gap: 8px; }
+    .tool-card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 16px; display: flex; align-items: center; justify-content: space-between;
+      cursor: pointer; transition: background 0.15s, border-color 0.15s;
+    }
+    .tool-card:active { background: var(--surface-hover); }
+    .tool-card.available { border-left: 3px solid var(--accent); }
+    .tool-info { flex: 1; min-width: 0; }
+    .tool-name { font-size: 15px; font-weight: 500; }
+    .tool-desc { font-size: 12px; color: var(--text-muted); margin-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .tool-status {
+      margin-left: 12px; font-size: 11px; font-weight: 500;
+      padding: 4px 10px; border-radius: 20px; white-space: nowrap; flex-shrink: 0;
+    }
+    .tool-status.cached { background: var(--accent-dim); color: var(--accent); }
+    .tool-status.not-cached { background: var(--danger-dim); color: var(--danger); }
+
+    .empty { text-align: center; padding: 60px 20px; color: var(--text-muted); }
+    .empty .icon { font-size: 40px; margin-bottom: 12px; }
+    .empty p { font-size: 14px; line-height: 1.5; }
+
+    .viewer { position: fixed; inset: 0; background: #fff; z-index: 100; display: none; flex-direction: column; }
+    .viewer.open { display: flex; }
+    .viewer-header {
+      background: var(--bg); padding: 12px 16px; padding-top: calc(var(--safe-top) + 12px);
+      display: flex; align-items: center; gap: 12px;
+      border-bottom: 1px solid var(--border); flex-shrink: 0;
+    }
+    .back-btn { background: none; border: none; color: var(--accent); font-family: inherit; font-size: 15px; font-weight: 500; cursor: pointer; padding: 4px 0; }
+    .viewer-title { font-size: 14px; font-weight: 500; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .viewer iframe { flex: 1; border: none; width: 100%; }
+
+    .progress-wrap { padding: 0 20px; height: 4px; display: none; }
+    .progress-wrap.active { display: block; }
+    .progress-bar { height: 4px; background: var(--accent); border-radius: 2px; transition: width 0.3s ease; }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <h1>Small Tools</h1>
+    <p>code.imdaniel.fyi — offline</p>
+  </div>
+
+  <div class="sync-bar">
+    <button class="sync-btn" onclick="syncAll()">
+      <span class="icon">↻</span>
+      Sync All Tools
+    </button>
+  </div>
+
+  <div class="progress-wrap" id="progress-wrap">
+    <div class="progress-bar" id="progress-bar" style="width: 0%"></div>
+  </div>
+
+  <div class="status" id="status"></div>
+
+  <div class="tools-list" id="tools-list">
+    <div class="empty">
+      <div class="icon">📡</div>
+      <p>Tap "Sync All Tools" to download<br>tools for offline use</p>
+    </div>
+  </div>
+
+  <div class="viewer" id="viewer">
+    <div class="viewer-header">
+      <button class="back-btn" onclick="closeViewer()">← Back</button>
+      <span class="viewer-title" id="viewer-title"></span>
+    </div>
+    <iframe id="viewer-frame" sandbox="allow-scripts allow-same-origin"></iframe>
+  </div>
+
+<script>
+  // ── Tool manifest ──
+  const URL_SCHEME = 'smalltools';
+  const BASE = 'https://code.imdaniel.fyi';
+  const TOOLS = [
+    { slug: '2048', file: 'tools/2048.html', name: '2048', desc: 'A simple 2048 clone' },
+    { slug: 'candles', file: 'tools/candles.html', name: 'Birthday Candles', desc: 'Interactive virtual birthday candles' },
+    { slug: 'calendar', file: 'tools/calendar.html', name: 'Calendar 2026', desc: 'A useful tool' },
+    { slug: 'kinship', file: 'tools/kinship-calculator.html', name: 'Chinese Kinship Calculator', desc: 'Chinese kinship term calculator' },
+    { slug: 'currency', file: 'tools/currency.html', name: 'Currency Converter', desc: 'USD, NTD, and JPY converter' },
+    { slug: 'time', file: 'tools/time-display.html', name: 'Exact Time', desc: 'Clean time display with timezone switching' },
+    { slug: 'collage', file: 'tools/collage.html', name: 'How you see me collage', desc: '3x3 photo collage generator' },
+    { slug: 'pick1', file: 'tools/pick1.html', name: 'Pick 1', desc: 'Multi-touch random selector' },
+    { slug: 'wordcount', file: 'tools/word-counter.html', name: 'Word Counter', desc: 'Count words, characters, sentences' },
+  ];
+
+  // ── Storage ──
+  const Storage = {
+    _cap() { return window.Capacitor?.Plugins?.Filesystem; },
+
+    async save(slug, html) {
+      const fs = this._cap();
+      if (fs) {
+        await fs.writeFile({
+          path: `tools/${slug}.html`,
+          data: btoa(unescape(encodeURIComponent(html))),
+          directory: 'DATA',
+          recursive: true,
+        });
+      } else {
+        localStorage.setItem(`tool:${slug}`, html);
+      }
+    },
+
+    async load(slug) {
+      const fs = this._cap();
+      if (fs) {
+        try {
+          const result = await fs.readFile({ path: `tools/${slug}.html`, directory: 'DATA', encoding: 'utf8' });
+          return result.data;
+        } catch { return null; }
+      } else {
+        return localStorage.getItem(`tool:${slug}`);
+      }
+    },
+
+    async exists(slug) {
+      const fs = this._cap();
+      if (fs) {
+        try { await fs.stat({ path: `tools/${slug}.html`, directory: 'DATA' }); return true; }
+        catch { return false; }
+      } else {
+        return localStorage.getItem(`tool:${slug}`) !== null;
+      }
+    }
+  };
+
+  // ── Quick Actions (long-press app icon) ──
+  const QuickActions = {
+    _cap() { return window.Capacitor?.Plugins?.AppShortcuts; },
+
+    async update(cachedSlugs) {
+      const plugin = this._cap();
+      if (!plugin) return;
+
+      // iOS supports max 4 dynamic quick actions
+      const shortcuts = TOOLS
+        .filter(t => cachedSlugs.has(t.slug))
+        .slice(0, 4)
+        .map(t => ({
+          id: `open-${t.slug}`,
+          title: t.name,
+          description: t.desc,
+        }));
+
+      try {
+        await plugin.set({ shortcuts });
+      } catch (e) {
+        console.warn('[QuickActions]', e);
+      }
+    },
+
+    listen() {
+      const plugin = this._cap();
+      if (!plugin) return;
+
+      plugin.addListener('click', (event) => {
+        const slug = event.id.replace('open-', '');
+        const tool = TOOLS.find(t => t.slug === slug);
+        if (tool) openTool(tool.slug, tool.name);
+      });
+    }
+  };
+
+  // ── Deep Links (Siri Shortcuts + URL scheme) ──
+  // URL format: smalltools://open/{slug}
+  const DeepLinks = {
+    _pending: null,
+
+    listen() {
+      const capApp = window.Capacitor?.Plugins?.App;
+      if (!capApp) return;
+
+      capApp.addListener('appUrlOpen', (event) => {
+        console.log('[DeepLink]', event.url);
+        try {
+          const url = new URL(event.url);
+          let slug = null;
+
+          if (url.hostname === 'open') {
+            slug = url.pathname.replace(/^\//, '') || url.searchParams.get('tool');
+          }
+
+          if (slug) {
+            const tool = TOOLS.find(t => t.slug === slug);
+            if (tool) {
+              setTimeout(() => openTool(tool.slug, tool.name), 150);
+            }
+          }
+        } catch (e) {
+          console.error('[DeepLink] Parse error:', e);
+        }
+      });
+    }
+  };
+
+  // ── State ──
+  let cachedSlugs = new Set();
+
+  // ── Init ──
+  async function init() {
+    for (const tool of TOOLS) {
+      if (await Storage.exists(tool.slug)) cachedSlugs.add(tool.slug);
+    }
+    render();
+    QuickActions.listen();
+    DeepLinks.listen();
+    QuickActions.update(cachedSlugs);
+  }
+
+  function render() {
+    const list = document.getElementById('tools-list');
+    list.innerHTML = TOOLS.map(tool => {
+      const cached = cachedSlugs.has(tool.slug);
+      return `
+        <div class="tool-card ${cached ? 'available' : ''}"
+             onclick="${cached ? `openTool('${tool.slug}', '${tool.name}')` : `syncOne('${tool.slug}')`}">
+          <div class="tool-info">
+            <div class="tool-name">${tool.name}</div>
+            <div class="tool-desc">${tool.desc}</div>
+          </div>
+          <span class="tool-status ${cached ? 'cached' : 'not-cached'}">
+            ${cached ? '✓ Offline' : 'Tap to sync'}
+          </span>
+        </div>`;
+    }).join('');
+  }
+
+  async function syncAll() {
+    const btn = document.querySelector('.sync-btn');
+    const statusEl = document.getElementById('status');
+    const progressWrap = document.getElementById('progress-wrap');
+    const progressBar = document.getElementById('progress-bar');
+
+    btn.classList.add('syncing');
+    btn.innerHTML = '<span class="icon">↻</span> Syncing…';
+    progressWrap.classList.add('active');
+    statusEl.className = 'status';
+    statusEl.textContent = '';
+
+    let done = 0, errors = 0;
+
+    for (const tool of TOOLS) {
+      try {
+        statusEl.textContent = `Downloading ${tool.name}…`;
+        const resp = await fetch(`${BASE}/${tool.file}`);
+        if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+        const html = await resp.text();
+        await Storage.save(tool.slug, html);
+        cachedSlugs.add(tool.slug);
+      } catch (e) {
+        console.error(`Failed: ${tool.slug}`, e);
+        errors++;
+      }
+      done++;
+      progressBar.style.width = `${(done / TOOLS.length) * 100}%`;
+      render();
+    }
+
+    await QuickActions.update(cachedSlugs);
+
+    btn.classList.remove('syncing');
+    btn.innerHTML = '<span class="icon">↻</span> Sync All Tools';
+    progressWrap.classList.remove('active');
+    progressBar.style.width = '0%';
+
+    if (errors > 0) {
+      statusEl.className = 'status error';
+      statusEl.textContent = `Synced with ${errors} error(s).`;
+    } else {
+      statusEl.textContent = `All ${TOOLS.length} tools saved for offline use.`;
+      setTimeout(() => { statusEl.textContent = ''; }, 3000);
+    }
+  }
+
+  async function syncOne(slug) {
+    const tool = TOOLS.find(t => t.slug === slug);
+    const statusEl = document.getElementById('status');
+    statusEl.className = 'status';
+    statusEl.textContent = `Downloading ${tool.name}…`;
+
+    try {
+      const resp = await fetch(`${BASE}/${tool.file}`);
+      if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+      const html = await resp.text();
+      await Storage.save(slug, html);
+      cachedSlugs.add(slug);
+      render();
+      await QuickActions.update(cachedSlugs);
+      statusEl.textContent = `${tool.name} saved.`;
+      setTimeout(() => { statusEl.textContent = ''; }, 2000);
+    } catch (e) {
+      statusEl.className = 'status error';
+      statusEl.textContent = `Failed to download ${tool.name}.`;
+    }
+  }
+
+  async function openTool(slug, name) {
+    const html = await Storage.load(slug);
+    if (!html) return;
+    document.getElementById('viewer-title').textContent = name;
+    document.getElementById('viewer-frame').srcdoc = html;
+    document.getElementById('viewer').classList.add('open');
+  }
+
+  function closeViewer() {
+    document.getElementById('viewer').classList.remove('open');
+    document.getElementById('viewer-frame').srcdoc = '';
+  }
+
+  // Boot
+  if (window.Capacitor) {
+    document.addEventListener('DOMContentLoaded', () => init());
+  } else {
+    init();
+  }
+</script>
+</body>
+</html>
