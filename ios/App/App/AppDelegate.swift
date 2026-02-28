@@ -5,9 +5,15 @@ import Capacitor
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+    private var pendingShortcutItem: UIApplicationShortcutItem?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        // If launched from a quick action, save it and handle after the bridge loads.
+        // Return false to prevent performActionFor from being called (we handle it ourselves).
+        if let shortcutItem = launchOptions?[.shortcutItem] as? UIApplicationShortcutItem {
+            pendingShortcutItem = shortcutItem
+            return false
+        }
         return true
     }
 
@@ -26,7 +32,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
-        // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+        // Deliver any pending quick action after the Capacitor bridge and plugins are ready
+        if let shortcutItem = pendingShortcutItem {
+            pendingShortcutItem = nil
+            postShortcutNotification(shortcutItem)
+        }
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
@@ -46,4 +56,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return ApplicationDelegateProxy.shared.application(application, continue: userActivity, restorationHandler: restorationHandler)
     }
 
+    // Handle quick action when app is already running (background/foreground)
+    func application(_ application: UIApplication,
+                     performActionFor shortcutItem: UIApplicationShortcutItem,
+                     completionHandler: @escaping (Bool) -> Void) {
+        postShortcutNotification(shortcutItem)
+        completionHandler(true)
+    }
+
+    private func postShortcutNotification(_ shortcutItem: UIApplicationShortcutItem) {
+        NotificationCenter.default.post(
+            name: NSNotification.Name("handleAppShortcutNotification"),
+            object: nil,
+            userInfo: ["shortcutItem": shortcutItem]
+        )
+    }
 }
