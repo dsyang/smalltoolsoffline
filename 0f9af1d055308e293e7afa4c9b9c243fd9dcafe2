@@ -1,0 +1,25 @@
+ios/App/App.xcodeproj/project.pbxproj
+  f9b22923e31ec744 237,288,305,327
+ios/App/App/AppDelegate.swift
+  f9b22923e31ec744 8,11-16,35-39,59,63-71
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.1.6",
+  "base_commit_sha": "0f9af1d055308e293e7afa4c9b9c243fd9dcafe2",
+  "prompts": {
+    "f9b22923e31ec744": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "76c7f156-eb74-40b8-8d19-1f66d3471420",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Dan Yang <dan@makenotion.com>",
+      "messages": [],
+      "total_additions": 28,
+      "total_deletions": 10,
+      "accepted_lines": 26,
+      "overriden_lines": 0
+    }
+  }
+}
