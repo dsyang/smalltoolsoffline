@@ -3,6 +3,8 @@ package fyi.imdaniel.smalltools.widget
 import android.content.Context
 import android.content.SharedPreferences
 
+data class ToolData(val toolId: String, val toolTitle: String)
+
 object WidgetPrefs {
 
     private fun prefs(context: Context): SharedPreferences =
@@ -15,11 +17,13 @@ object WidgetPrefs {
             .apply()
     }
 
-    fun getToolId(context: Context, appWidgetId: Int): String? =
-        prefs(context).getString("tool_id_$appWidgetId", null)
-
-    fun getToolTitle(context: Context, appWidgetId: Int): String? =
-        prefs(context).getString("tool_title_$appWidgetId", null)
+    /** Returns both id and title in a single SharedPreferences open, or null if not configured. */
+    fun getToolData(context: Context, appWidgetId: Int): ToolData? {
+        val p = prefs(context)
+        val id = p.getString("tool_id_$appWidgetId", null) ?: return null
+        val title = p.getString("tool_title_$appWidgetId", null) ?: return null
+        return ToolData(id, title)
+    }
 
     fun clear(context: Context, appWidgetId: Int) {
         prefs(context).edit()

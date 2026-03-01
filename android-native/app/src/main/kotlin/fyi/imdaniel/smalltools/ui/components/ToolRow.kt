@@ -6,10 +6,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowDownward
-import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.Autorenew       // arrow.triangle.2.circlepath.circle.fill
+import androidx.compose.material.icons.filled.CheckCircle    // checkmark.circle.fill
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material.icons.outlined.ArrowCircleDown  // arrow.down.circle
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
@@ -30,6 +30,10 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import fyi.imdaniel.smalltools.model.Tool
 import fyi.imdaniel.smalltools.viewmodel.ToolViewModel
+
+// Matches iOS system orange / green used for the same status icons in the iOS app.
+private val IosOrange = Color(0xFFFF9500)
+private val IosGreen = Color(0xFF34C759)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -92,24 +96,28 @@ fun ToolRow(
             },
             trailingContent = {
                 when {
+                    // Mirrors iOS ProgressView()
                     isDownloading -> CircularProgressIndicator(
                         modifier = Modifier.size(20.dp),
                         strokeWidth = 2.dp,
                     )
+                    // Mirrors iOS arrow.triangle.2.circlepath.circle.fill (orange)
                     isOutdated -> IconButton(onClick = { viewModel.download(tool) }) {
                         Icon(
-                            Icons.Default.Refresh,
-                            contentDescription = "Update",
-                            tint = Color(0xFFFF9500),
+                            Icons.Filled.Autorenew,
+                            contentDescription = "Update available",
+                            tint = IosOrange,
                         )
                     }
+                    // Mirrors iOS checkmark.circle.fill (green)
                     isDownloaded -> Icon(
-                        Icons.Default.CheckCircle,
+                        Icons.Filled.CheckCircle,
                         contentDescription = "Downloaded",
-                        tint = Color(0xFF34C759),
+                        tint = IosGreen,
                     )
+                    // Mirrors iOS arrow.down.circle (secondary)
                     else -> Icon(
-                        Icons.Default.ArrowDownward,
+                        Icons.Outlined.ArrowCircleDown,
                         contentDescription = "Not downloaded",
                         tint = MaterialTheme.colorScheme.onSurfaceVariant,
                     )

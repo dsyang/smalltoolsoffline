@@ -13,9 +13,6 @@ data class Tool(
     val filename: String get() = path.substringAfterLast('/')
     val downloadURL: String get() = "https://code.imdaniel.fyi/$path"
 
-    companion object {
-        fun find(slug: String, tools: List<Tool>): Tool? = tools.firstOrNull { it.id == slug }
-    }
 }
 
 @Serializable

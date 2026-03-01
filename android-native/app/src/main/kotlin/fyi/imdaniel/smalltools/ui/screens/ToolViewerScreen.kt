@@ -36,26 +36,22 @@ fun ToolViewerScreen(
     onBack: () -> Unit,
 ) {
     val downloadedIds by viewModel.downloadedIds.collectAsStateWithLifecycle()
-    val downloadingIds by viewModel.downloadingIds.collectAsStateWithLifecycle()
 
     val hasLocalFile = tool.id in downloadedIds
-    val isDownloading = tool.id in downloadingIds
-    var errorMessage by remember { mutableStateOf<String?>(null) }
 
+    // Trigger download if the file isn't local yet. download() is idempotent —
+    // it guards against concurrent calls internally and swallows errors.
     LaunchedEffect(tool.id) {
-        if (!hasLocalFile) {
-            try {
-                viewModel.download(tool)
-            } catch (e: Exception) {
-                errorMessage = e.message ?: "Download failed"
-            }
-        }
+        if (!hasLocalFile) viewModel.download(tool)
     }
 
     Box(modifier = Modifier.fillMaxSize()) {
         when {
             hasLocalFile -> {
-                val file = viewModel.localFile(tool)
+                val fileUrl = remember(tool.id) { "file://${viewModel.localFile(tool).absolutePath}" }
+                // Track the last URL we actually loaded so recompositions don't reload the page.
+                var loadedUrl by remember { mutableStateOf("") }
+
                 AndroidView(
                     modifier = Modifier.fillMaxSize(),
                     factory = { context ->
@@ -64,7 +60,7 @@ fun ToolViewerScreen(
                                 javaScriptEnabled = true
                                 domStorageEnabled = true
                                 allowFileAccess = true
-                                @Suppress("DEPRECATION")
+                                @Suppress("DEPRECATION")   // needed for local file:// → file:// resource loads
                                 allowFileAccessFromFileURLs = true
                                 cacheMode = WebSettings.LOAD_DEFAULT
                             }
@@ -72,25 +68,15 @@ fun ToolViewerScreen(
                         }
                     },
                     update = { webView ->
-                        webView.loadUrl("file://${file.absolutePath}")
+                        if (loadedUrl != fileUrl) {
+                            loadedUrl = fileUrl
+                            webView.loadUrl(fileUrl)
+                        }
                     },
                 )
             }
-            errorMessage != null -> {
-                Column(
-                    modifier = Modifier.align(Alignment.Center),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(8.dp),
-                ) {
-                    Text("Download Failed", style = MaterialTheme.typography.headlineSmall)
-                    Text(
-                        errorMessage!!,
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
-                }
-            }
             else -> {
+                // Downloading — mirrors iOS ProgressView + tool name text
                 Column(
                     modifier = Modifier.align(Alignment.Center),
                     horizontalAlignment = Alignment.CenterHorizontally,
@@ -109,10 +95,7 @@ fun ToolViewerScreen(
                 .size(40.dp)
                 .align(Alignment.TopStart),
         ) {
-            Icon(
-                Icons.AutoMirrored.Filled.ArrowBack,
-                contentDescription = "Back",
-            )
+            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
         }
     }
 }

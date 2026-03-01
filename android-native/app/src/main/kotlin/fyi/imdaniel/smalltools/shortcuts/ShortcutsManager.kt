@@ -12,6 +12,8 @@ import fyi.imdaniel.smalltools.model.Tool
 object ShortcutsManager {
 
     const val EXTRA_SLUG = "slug"
+    /** Shared intent flags used by both shortcuts and the widget to launch MainActivity. */
+    const val LAUNCH_FLAGS = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
 
     fun update(context: Context, downloadedTools: List<Tool>) {
         val maxCount = minOf(ShortcutManagerCompat.getMaxShortcutCountPerActivity(context), 4)
@@ -24,7 +26,7 @@ object ShortcutsManager {
                     Intent(context, MainActivity::class.java).apply {
                         action = Intent.ACTION_VIEW
                         putExtra(EXTRA_SLUG, tool.id)
-                        flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+                        flags = LAUNCH_FLAGS
                     }
                 )
                 .build()
