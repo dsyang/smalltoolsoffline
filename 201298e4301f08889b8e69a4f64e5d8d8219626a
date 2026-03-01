@@ -1,0 +1,52 @@
+ios-native/SmallTools/SmallTools/Views/ToolListView.swift
+  61a5448c06e56ea9 7,11-16,18,22-29
+ios-native/SmallTools/SmallTools/ViewModels/ToolStore.swift
+  61a5448c06e56ea9 2,6,8,10,14,20-35,38-47,49-51,54-55,58-59,61-66,75,80-84,91-92,95-102,109,112,120,123
+ios-native/SmallTools/SmallTools/Views/ToolViewerView.swift
+  61a5448c06e56ea9 10,21
+ios-native/SmallTools/SmallTools/QuickActions.swift
+  61a5448c06e56ea9 5,18-20
+ios-native/SmallTools/SmallTools/Models/Tool.swift
+  61a5448c06e56ea9 3-7,9-11,13-15,17-18,22-23
+ios-native/SmallTools/SmallTools/Views/ToolRow.swift
+  61a5448c06e56ea9 13-20
+ios-native/SmallTools/SmallTools/Intents/OpenToolIntent.swift
+  61a5448c06e56ea9 23,27-35
+ios-native/SmallTools/SmallTools/SmallToolsApp.swift
+  61a5448c06e56ea9 23,39,60-61,74,76
+ios-native/SmallTools/SmallTools/Assets.xcassets/AppIcon.appiconset/Contents.json
+  bcbbe3df36175795 4,8-28
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.1.6",
+  "base_commit_sha": "201298e4301f08889b8e69a4f64e5d8d8219626a",
+  "prompts": {
+    "61a5448c06e56ea9": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "68f0be75-0dc9-4b62-a0fb-4e908870459a",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Dan Yang <dan@makenotion.com>",
+      "messages": [],
+      "total_additions": 170,
+      "total_deletions": 88,
+      "accepted_lines": 140,
+      "overriden_lines": 0
+    },
+    "bcbbe3df36175795": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "266409c8-1ba8-4446-ac9a-e2c66a14516b",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Dan Yang <dan@makenotion.com>",
+      "messages": [],
+      "total_additions": 321,
+      "total_deletions": 125,
+      "accepted_lines": 196,
+      "overriden_lines": 0
+    }
+  }
+}
