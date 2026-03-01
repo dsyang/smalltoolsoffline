@@ -1,0 +1,36 @@
+ios-native/SmallTools/SmallTools/Views/ToolViewerView.swift
+  61a5448c06e56ea9 6,10,13,19-29,31
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.1.6",
+  "base_commit_sha": "7278ddb24157b3abbfd24b331a8f744072a4d0fb",
+  "prompts": {
+    "61a5448c06e56ea9": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "68f0be75-0dc9-4b62-a0fb-4e908870459a",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Dan Yang <dan@makenotion.com>",
+      "messages": [],
+      "total_additions": 15,
+      "total_deletions": 3,
+      "accepted_lines": 15,
+      "overriden_lines": 0
+    },
+    "bcbbe3df36175795": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "266409c8-1ba8-4446-ac9a-e2c66a14516b",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Dan Yang <dan@makenotion.com>",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 171,
+      "overriden_lines": 0
+    }
+  }
+}
