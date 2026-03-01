@@ -1,0 +1,47 @@
+ios-native/SmallTools/SmallTools/Models/Tool.swift
+  61a5448c06e56ea9 1-27
+ios-native/SmallTools/SmallTools/Assets.xcassets/AppIcon.appiconset/Contents.json
+  61a5448c06e56ea9 1-13
+ios-native/SmallTools/project.yml
+  61a5448c06e56ea9 1-30
+ios-native/SmallTools/SmallTools/Views/WebView.swift
+  61a5448c06e56ea9 1-20
+ios-native/SmallTools/SmallTools/Views/ToolListView.swift
+  61a5448c06e56ea9 1-25
+ios-native/SmallTools/SmallTools/Assets.xcassets/Contents.json
+  61a5448c06e56ea9 1-6
+ios-native/SmallTools/SmallTools/Views/ToolRow.swift
+  61a5448c06e56ea9 1-22
+ios-native/SmallTools/SmallTools/Views/ToolViewerView.swift
+  61a5448c06e56ea9 1-29
+ios-native/SmallTools/SmallTools/Intents/OpenToolIntent.swift
+  61a5448c06e56ea9 1-60
+ios-native/SmallTools/SmallTools/ViewModels/ToolStore.swift
+  61a5448c06e56ea9 1-65
+ios-native/SmallTools/SmallTools/SmallToolsApp.swift
+  61a5448c06e56ea9 1-82
+ios-native/SmallTools/SmallTools/Info.plist
+  61a5448c06e56ea9 1-4,22-32,38-39
+ios-native/SmallTools/SmallTools/QuickActions.swift
+  61a5448c06e56ea9 1-23
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.1.6",
+  "base_commit_sha": "013dccda8523112f4374f552a071951e9bbc92c2",
+  "prompts": {
+    "61a5448c06e56ea9": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "68f0be75-0dc9-4b62-a0fb-4e908870459a",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Dan Yang <dan@makenotion.com>",
+      "messages": [],
+      "total_additions": 424,
+      "total_deletions": 3,
+      "accepted_lines": 419,
+      "overriden_lines": 4
+    }
+  }
+}
