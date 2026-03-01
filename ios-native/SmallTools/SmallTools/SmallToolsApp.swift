@@ -20,7 +20,7 @@ struct SmallToolsApp: App {
                 handleDeepLink(url)
             }
             .onChange(of: appDelegate.pendingShortcutSlug) { _, slug in
-                guard let slug, let tool = Tool.find(slug) else { return }
+                guard let slug, let tool = Tool.find(slug, in: store.tools) else { return }
                 appDelegate.pendingShortcutSlug = nil
                 navigate(to: tool)
             }
@@ -36,7 +36,7 @@ struct SmallToolsApp: App {
         guard url.scheme == "smalltools",
               url.host() == "open",
               let slug = url.pathComponents.dropFirst().first,
-              let tool = Tool.find(slug) else { return }
+              let tool = Tool.find(slug, in: store.tools) else { return }
         navigate(to: tool)
     }
 
@@ -57,9 +57,8 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
         configurationForConnecting connectingSceneSession: UISceneSession,
         options: UIScene.ConnectionOptions
     ) -> UISceneConfiguration {
-        if let shortcutItem = options.shortcutItem,
-           let tool = QuickActions.tool(for: shortcutItem) {
-            pendingShortcutSlug = tool.id
+        if let shortcutItem = options.shortcutItem {
+            pendingShortcutSlug = QuickActions.slug(for: shortcutItem)
         }
         let config = UISceneConfiguration(name: nil, sessionRole: connectingSceneSession.role)
         config.delegateClass = SceneDelegate.self
@@ -72,10 +71,9 @@ final class SceneDelegate: NSObject, UIWindowSceneDelegate {
         _ windowScene: UIWindowScene,
         performActionFor shortcutItem: UIApplicationShortcutItem
     ) async -> Bool {
-        guard let tool = QuickActions.tool(for: shortcutItem) else { return false }
-        // Find the AppDelegate via UIApplication and set the pending slug
+        guard let slug = QuickActions.slug(for: shortcutItem) else { return false }
         if let appDelegate = await UIApplication.shared.delegate as? AppDelegate {
-            await MainActor.run { appDelegate.pendingShortcutSlug = tool.id }
+            await MainActor.run { appDelegate.pendingShortcutSlug = slug }
         }
         return true
     }

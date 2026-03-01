@@ -4,22 +4,29 @@ struct ToolListView: View {
     @Environment(ToolStore.self) private var store
 
     var body: some View {
-        List(Tool.all) { tool in
+        List(store.tools) { tool in
             NavigationLink(value: tool) {
                 ToolRow(tool: tool)
             }
-        }
-        .navigationTitle("Small Tools")
-        .toolbar {
-            ToolbarItem(placement: .primaryAction) {
-                if store.isSyncingAll {
-                    ProgressView()
-                } else {
-                    Button("Sync All", systemImage: "arrow.clockwise") {
-                        Task { await store.syncAll() }
+            .swipeActions(edge: .trailing) {
+                if store.hasLocalFile(tool) {
+                    Button {
+                        store.deleteLocal(tool)
+                    } label: {
+                        Label("Delete", systemImage: "trash")
                     }
+                    .tint(.red)
                 }
             }
         }
+        .overlay {
+            if store.tools.isEmpty && store.isFetchingManifest {
+                ProgressView("Loading tools…")
+            } else if store.tools.isEmpty {
+                ContentUnavailableView("No Tools", systemImage: "wrench.and.screwdriver", description: Text("Pull to refresh or tap Sync All"))
+            }
+        }
+        .task { await store.fetchManifest() }
+        .navigationTitle("Small Tools")
     }
 }

@@ -2,7 +2,7 @@ import UIKit
 
 enum QuickActions {
     static func update(with store: ToolStore) {
-        let downloaded = Tool.all.filter { store.isDownloaded($0) }
+        let downloaded = store.tools.filter { store.isDownloaded($0) }
         let items = downloaded.prefix(4).map { tool in
             UIApplicationShortcutItem(
                 type: "open-tool",
@@ -15,9 +15,8 @@ enum QuickActions {
         UIApplication.shared.shortcutItems = items
     }
 
-    static func tool(for shortcutItem: UIApplicationShortcutItem) -> Tool? {
-        guard shortcutItem.type == "open-tool",
-              let slug = shortcutItem.userInfo?["slug"] as? String else { return nil }
-        return Tool.find(slug)
+    static func slug(for shortcutItem: UIApplicationShortcutItem) -> String? {
+        guard shortcutItem.type == "open-tool" else { return nil }
+        return shortcutItem.userInfo?["slug"] as? String
     }
 }

@@ -7,7 +7,7 @@ struct ToolViewerView: View {
 
     var body: some View {
         Group {
-            if store.isDownloaded(tool) {
+            if store.hasLocalFile(tool) {
                 WebView(fileURL: store.localURL(for: tool))
             } else if let error {
                 ContentUnavailableView("Download Failed", systemImage: "exclamationmark.triangle", description: Text(error))
@@ -18,7 +18,7 @@ struct ToolViewerView: View {
         .navigationTitle(tool.name)
         .navigationBarTitleDisplayMode(.inline)
         .task {
-            guard !store.isDownloaded(tool) else { return }
+            guard !store.hasLocalFile(tool) else { return }
             do {
                 try await store.download(tool)
             } catch {

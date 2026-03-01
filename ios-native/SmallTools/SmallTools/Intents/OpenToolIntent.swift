@@ -20,11 +20,19 @@ struct ToolEntity: AppEntity {
 
 struct ToolQuery: EntityQuery {
     func entities(for identifiers: [String]) async throws -> [ToolEntity] {
-        Tool.all.filter { identifiers.contains($0.id) }.map { ToolEntity(tool: $0) }
+        loadCachedTools().filter { identifiers.contains($0.id) }.map { ToolEntity(tool: $0) }
     }
 
     func suggestedEntities() async throws -> [ToolEntity] {
-        Tool.all.map { ToolEntity(tool: $0) }
+        loadCachedTools().map { ToolEntity(tool: $0) }
+    }
+
+    private func loadCachedTools() -> [Tool] {
+        let docs = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+        let url = docs.appendingPathComponent("manifest.json")
+        guard let data = try? Data(contentsOf: url),
+              let manifest = try? JSONDecoder().decode(Manifest.self, from: data) else { return [] }
+        return manifest.tools
     }
 }
 

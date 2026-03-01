@@ -1,27 +1,24 @@
 import Foundation
 
-struct Tool: Identifiable, Hashable {
-    let id: String // slug
-    let name: String
-    let filename: String
+struct Tool: Identifiable, Hashable, Codable {
+    let title: String
+    let description: String
+    let path: String
+    let sha256: String
 
-    var remoteURL: URL {
-        URL(string: "https://code.imdaniel.fyi/tools/\(filename)")!
+    var id: String { URL(string: path)!.deletingPathExtension().lastPathComponent }
+    var name: String { title }
+    var filename: String { URL(string: path)!.lastPathComponent }
+
+    var downloadURL: URL {
+        URL(string: "https://code.imdaniel.fyi/\(path)")!
     }
 
-    static let all: [Tool] = [
-        Tool(id: "2048", name: "2048", filename: "2048.html"),
-        Tool(id: "kinship", name: "Chinese Kinship Calculator", filename: "kinship-calculator.html"),
-        Tool(id: "currency", name: "Currency Converter", filename: "currency.html"),
-        Tool(id: "time", name: "Exact Time", filename: "time-display.html"),
-        Tool(id: "pick1", name: "Pick 1", filename: "pick1.html"),
-        Tool(id: "candles", name: "Birthday Candles", filename: "candles.html"),
-        Tool(id: "calendar", name: "Calendar 2026", filename: "calendar-2026.html"),
-        Tool(id: "collage", name: "How You See Me", filename: "collage.html"),
-        Tool(id: "wordcount", name: "Word Counter", filename: "wordcount.html"),
-    ]
-
-    static func find(_ slug: String) -> Tool? {
-        all.first { $0.id == slug }
+    static func find(_ slug: String, in tools: [Tool]) -> Tool? {
+        tools.first { $0.id == slug }
     }
+}
+
+struct Manifest: Codable {
+    let tools: [Tool]
 }
