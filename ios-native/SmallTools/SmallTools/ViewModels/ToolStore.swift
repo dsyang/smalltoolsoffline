@@ -10,6 +10,8 @@ final class ToolStore {
     private(set) var isFetchingManifest = false
     var isSyncingAll = false
 
+    private var _allTools: [Tool] = []
+    private let orderKey = "toolOrder"
     private let toolsDirectory: URL
     private let manifestURL = URL(string: "https://code.imdaniel.fyi/assets.json")!
 
@@ -18,9 +20,35 @@ final class ToolStore {
         toolsDirectory = docs.appendingPathComponent("tools", isDirectory: true)
         try? FileManager.default.createDirectory(at: toolsDirectory, withIntermediateDirectories: true)
         if let cached = loadCachedManifest() {
-            tools = cached
+            _allTools = cached
+            applyOrder()
             scanDownloaded()
         }
+    }
+
+    // MARK: - Ordering
+
+    private var savedOrder: [String] {
+        get { UserDefaults.standard.stringArray(forKey: orderKey) ?? [] }
+        set { UserDefaults.standard.set(newValue, forKey: orderKey) }
+    }
+
+    private func applyOrder() {
+        let order = savedOrder
+        guard !order.isEmpty else {
+            tools = _allTools
+            return
+        }
+        let toolsByID = Dictionary(uniqueKeysWithValues: _allTools.map { ($0.id, $0) })
+        var ordered: [Tool] = order.compactMap { toolsByID[$0] }
+        let orderedIDs = Set(order)
+        ordered += _allTools.filter { !orderedIDs.contains($0.id) }
+        tools = ordered
+    }
+
+    func moveTools(from source: IndexSet, to destination: Int) {
+        tools.move(fromOffsets: source, toOffset: destination)
+        savedOrder = tools.map(\.id)
     }
 
     // MARK: - Manifest
@@ -44,7 +72,8 @@ final class ToolStore {
             let (data, _) = try await URLSession.shared.data(from: manifestURL)
             let manifest = try JSONDecoder().decode(Manifest.self, from: data)
             try data.write(to: cachedManifestURL, options: .atomic)
-            tools = manifest.tools
+            _allTools = manifest.tools
+            applyOrder()
             scanDownloaded()
         } catch {
             // Keep using cached tools if fetch fails

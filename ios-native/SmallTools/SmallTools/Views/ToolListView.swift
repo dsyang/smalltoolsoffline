@@ -4,20 +4,23 @@ struct ToolListView: View {
     @Environment(ToolStore.self) private var store
 
     var body: some View {
-        List(store.tools) { tool in
-            NavigationLink(value: tool) {
-                ToolRow(tool: tool)
-            }
-            .swipeActions(edge: .trailing) {
-                if store.hasLocalFile(tool) {
-                    Button {
-                        store.deleteLocal(tool)
-                    } label: {
-                        Label("Delete", systemImage: "trash")
+        List {
+            ForEach(store.tools) { tool in
+                NavigationLink(value: tool) {
+                    ToolRow(tool: tool)
+                }
+                .swipeActions(edge: .trailing) {
+                    if store.hasLocalFile(tool) {
+                        Button {
+                            store.deleteLocal(tool)
+                        } label: {
+                            Label("Delete", systemImage: "trash")
+                        }
+                        .tint(.red)
                     }
-                    .tint(.red)
                 }
             }
+            .onMove { store.moveTools(from: $0, to: $1) }
         }
         .overlay {
             if store.tools.isEmpty && store.isFetchingManifest {
@@ -27,6 +30,7 @@ struct ToolListView: View {
             }
         }
         .task { await store.fetchManifest() }
+        .onAppear { WebViewPool.shared.warmUp() }
         .navigationTitle("Small Tools")
     }
 }
