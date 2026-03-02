@@ -1,0 +1,55 @@
+ios-native/SmallTools/SmallTools/Views/WebView.swift
+  11951eb41a724a1d 4-6,8-25,35-41
+  fd0b7a3adf810116 31-32
+ios-native/SmallTools/SmallTools/Views/ToolListView.swift
+  000248160382918b 7-8,17-19,23
+  11951eb41a724a1d 33
+ios-native/SmallTools/SmallTools/ViewModels/ToolStore.swift
+  000248160382918b 13-14,23-24,29-51,75-76
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.1.7",
+  "base_commit_sha": "b3319ab91174d6fef1c7a1ceb2559307e4a55705",
+  "prompts": {
+    "000248160382918b": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "4fbea9c0-70a8-4e75-91c7-e593dbe9637a",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Dan Yang <dan@makenotion.com>",
+      "messages": [],
+      "total_additions": 45,
+      "total_deletions": 13,
+      "accepted_lines": 37,
+      "overriden_lines": 0
+    },
+    "11951eb41a724a1d": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "05cbbc3f-a2d2-4de2-ab22-c15863088169",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Dan Yang <dan@makenotion.com>",
+      "messages": [],
+      "total_additions": 30,
+      "total_deletions": 3,
+      "accepted_lines": 30,
+      "overriden_lines": 0
+    },
+    "fd0b7a3adf810116": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "eefff02e-161b-40ca-ba96-ec75e5182b7b",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Dan Yang <dan@makenotion.com>",
+      "messages": [],
+      "total_additions": 2,
+      "total_deletions": 0,
+      "accepted_lines": 2,
+      "overriden_lines": 0
+    }
+  }
+}
