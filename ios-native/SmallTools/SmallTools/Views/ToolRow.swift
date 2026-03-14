@@ -6,7 +6,14 @@ struct ToolRow: View {
 
     var body: some View {
         HStack {
-            Text(tool.name)
+            VStack(alignment: .leading, spacing: 2) {
+                Text(tool.name)
+                if let bytes = tool.fileSizeBytes {
+                    Text(ByteCountFormatter.string(fromByteCount: Int64(bytes), countStyle: .file))
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+            }
             Spacer()
             if store.isDownloading(tool) {
                 ProgressView()

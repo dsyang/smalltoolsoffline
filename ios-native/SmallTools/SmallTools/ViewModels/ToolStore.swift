@@ -69,10 +69,12 @@ final class ToolStore {
         defer { isFetchingManifest = false }
 
         do {
-            let (data, _) = try await URLSession.shared.data(from: manifestURL)
+            let request = URLRequest(url: manifestURL, cachePolicy: .reloadIgnoringLocalCacheData)
+            let (data, _) = try await URLSession.shared.data(for: request)
             let manifest = try JSONDecoder().decode(Manifest.self, from: data)
             try data.write(to: cachedManifestURL, options: .atomic)
             _allTools = manifest.tools
+            deleteRemovedTools(currentManifestTools: manifest.tools)
             applyOrder()
             scanDownloaded()
         } catch {
@@ -81,6 +83,14 @@ final class ToolStore {
     }
 
     // MARK: - Filesystem
+
+    private func deleteRemovedTools(currentManifestTools: [Tool]) {
+        let knownFilenames = Set(currentManifestTools.map(\.filename))
+        let files = (try? FileManager.default.contentsOfDirectory(at: toolsDirectory, includingPropertiesForKeys: nil)) ?? []
+        for file in files where !knownFilenames.contains(file.lastPathComponent) {
+            try? FileManager.default.removeItem(at: file)
+        }
+    }
 
     private func scanDownloaded() {
         downloadedToolIDs = []

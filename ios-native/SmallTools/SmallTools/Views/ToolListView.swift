@@ -26,9 +26,10 @@ struct ToolListView: View {
             if store.tools.isEmpty && store.isFetchingManifest {
                 ProgressView("Loading tools…")
             } else if store.tools.isEmpty {
-                ContentUnavailableView("No Tools", systemImage: "wrench.and.screwdriver", description: Text("Pull to refresh or tap Sync All"))
+                ContentUnavailableView("No Tools", systemImage: "wrench.and.screwdriver", description: Text("Pull to refresh to load tools"))
             }
         }
+        .refreshable { await store.fetchManifest() }
         .task { await store.fetchManifest() }
         .onAppear { WebViewPool.shared.warmUp() }
         .navigationTitle("Small Tools")

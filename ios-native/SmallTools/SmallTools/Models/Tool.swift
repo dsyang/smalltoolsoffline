@@ -5,6 +5,12 @@ struct Tool: Identifiable, Hashable, Codable {
     let description: String
     let path: String
     let sha256: String
+    let fileSizeBytes: Int?
+
+    enum CodingKeys: String, CodingKey {
+        case title, description, path, sha256
+        case fileSizeBytes = "file_size_bytes"
+    }
 
     var id: String { URL(string: path)!.deletingPathExtension().lastPathComponent }
     var name: String { title }
