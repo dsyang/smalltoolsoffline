@@ -35,10 +35,10 @@ class ToolWidget : GlanceAppWidget() {
         // Single SharedPreferences open instead of two separate gets
         val toolData = WidgetPrefs.getToolData(context, appWidgetId)
 
-        val launchIntent = toolData?.let { data ->
+        val launchIntent = toolData?.let { td ->
             Intent(context, MainActivity::class.java).apply {
                 action = Intent.ACTION_VIEW
-                data = Uri.parse("smalltools://open/${data.toolId}")
+                data = Uri.parse("smalltools://open/${td.toolId}")
                 flags = ShortcutsManager.LAUNCH_FLAGS
             }
         }

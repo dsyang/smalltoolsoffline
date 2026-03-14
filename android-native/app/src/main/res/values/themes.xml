@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Compose handles all theming; this base theme suppresses the title bar -->
-    <style name="Theme.SmallTools" parent="android:Theme.Material.Light.NoTitleBar" />
+    <style name="Theme.SmallTools" parent="android:Theme.Material.Light.NoActionBar" />
 </resources>
