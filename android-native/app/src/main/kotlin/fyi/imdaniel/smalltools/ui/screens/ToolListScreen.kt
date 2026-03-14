@@ -5,15 +5,10 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Sync
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -38,7 +33,6 @@ fun ToolListScreen(
 ) {
     val tools by viewModel.tools.collectAsStateWithLifecycle()
     val isFetchingManifest by viewModel.isFetchingManifest.collectAsStateWithLifecycle()
-    val isSyncingAll by viewModel.isSyncingAll.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
         viewModel.fetchManifest()
@@ -48,20 +42,6 @@ fun ToolListScreen(
         topBar = {
             TopAppBar(
                 title = { Text("Small Tools") },
-                actions = {
-                    if (isSyncingAll) {
-                        CircularProgressIndicator(
-                            modifier = Modifier
-                                .padding(end = 16.dp)
-                                .size(24.dp),
-                            strokeWidth = 2.dp,
-                        )
-                    } else {
-                        IconButton(onClick = { viewModel.syncAll() }) {
-                            Icon(Icons.Default.Sync, contentDescription = "Sync All")
-                        }
-                    }
-                },
             )
         },
     ) { padding ->

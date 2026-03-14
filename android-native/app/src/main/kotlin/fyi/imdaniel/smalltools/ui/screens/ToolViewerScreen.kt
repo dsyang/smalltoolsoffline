@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -45,7 +46,7 @@ fun ToolViewerScreen(
         if (!hasLocalFile) viewModel.download(tool)
     }
 
-    Box(modifier = Modifier.fillMaxSize()) {
+    Box(modifier = Modifier.fillMaxSize().safeDrawingPadding()) {
         when {
             hasLocalFile -> {
                 val fileUrl = remember(tool.id) { "file://${viewModel.localFile(tool).absolutePath}" }
@@ -55,6 +56,7 @@ fun ToolViewerScreen(
                 AndroidView(
                     modifier = Modifier.fillMaxSize(),
                     factory = { context ->
+                        WebView.setWebContentsDebuggingEnabled(true)
                         WebView(context).apply {
                             settings.apply {
                                 javaScriptEnabled = true

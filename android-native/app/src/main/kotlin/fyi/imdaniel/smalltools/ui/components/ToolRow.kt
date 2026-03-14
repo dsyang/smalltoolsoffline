@@ -23,6 +23,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.rememberSwipeToDismissBoxState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -52,14 +53,16 @@ fun ToolRow(
     val isDownloaded = tool.id in downloadedIds && !isOutdated
     val hasLocalFile = tool.id in downloadedIds
 
+    // rememberUpdatedState keeps a State<T> that is always current, even though
+    // the confirmValueChange lambda below is captured once by rememberSwipeToDismissBoxState.
+    val currentHasLocalFile = rememberUpdatedState(hasLocalFile)
+
     val dismissState = rememberSwipeToDismissBoxState(
         confirmValueChange = { value ->
-            if (value == SwipeToDismissBoxValue.EndToStart && hasLocalFile) {
+            if (value == SwipeToDismissBoxValue.EndToStart && currentHasLocalFile.value) {
                 onDelete()
-                true
-            } else {
-                false
             }
+            false  // always snap back — the tool stays in the list, only the local file is removed
         },
         positionalThreshold = { it * 0.4f },
     )
