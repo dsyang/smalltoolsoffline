@@ -13,7 +13,7 @@ targets:
     info:
       path: SmallTools/Info.plist
       properties:
-        CFBundleDisplayName: Small Tools
+        CFBundleDisplayName: Offline Toolkit
         UILaunchScreen: {}
         CFBundleURLTypes:
           - CFBundleTypeRole: Editor
