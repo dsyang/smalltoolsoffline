@@ -9,9 +9,10 @@ Both iOS and Android apps must implement all features described in this document
 ### Manifest
 
 - **URL:** `https://code.imdaniel.fyi/assets.json`
-- **Format:** `{ "tools": [{ "title", "description", "path", "sha256", "file_size_bytes" }] }`
+- **Format:** `{ "tools": [{ "title", "description", "path", "sha256", "file_size_bytes", "assets" }] }`
 - Each tool entry includes a SHA256 hash for integrity verification and an optional file size in bytes.
-- Tool files are downloaded from `https://code.imdaniel.fyi/{path}`.
+- Each tool entry includes an `assets` array of additional files the tool depends on (e.g. images). Each asset has `path`, `sha256`, and optional `file_size_bytes`. The array may be empty or absent (older manifests).
+- Tool files and assets are downloaded from `https://code.imdaniel.fyi/{path}`.
 
 ## Data Model
 
@@ -24,6 +25,15 @@ A **Tool** has:
 | `path` | string | Relative path on CDN (e.g. `tools/2048.html`) |
 | `sha256` | string | Hex-encoded SHA256 hash of the file contents |
 | `file_size_bytes` | int? | Optional file size for display |
+| `assets` | Asset[] | Additional dependent files (images, etc.); empty by default |
+
+An **Asset** has:
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `path` | string | Relative path on CDN (e.g. `tools/allergy-icons/egg.png`) |
+| `sha256` | string | Hex-encoded SHA256 hash of the file contents |
+| `file_size_bytes` | int? | Optional file size |
 
 Derived properties:
 
@@ -90,13 +100,20 @@ Displays a downloaded tool's HTML in a full-screen WebView.
 ### Local file storage
 
 - Downloaded tool HTML files are stored in a `tools/` subdirectory of the app's documents/files directory.
+- Tool assets are stored mirroring the CDN's directory structure relative to the `tools/` root (e.g. CDN `tools/allergy-icons/egg.png` is stored at `tools/allergy-icons/egg.png` in the app directory). This ensures relative references in the tool's HTML (e.g. `<img src="allergy-icons/egg.png">`) resolve correctly when loaded from the local filesystem.
 - The cached manifest is stored alongside this directory as `manifest.json`.
+
+### Asset downloads
+
+- When a tool is downloaded for offline use, all of its assets are downloaded as well. Assets for a tool download concurrently.
+- Deleting a tool's local file also deletes its downloaded assets.
 
 ### SHA256 integrity
 
 - After downloading a tool, or when scanning existing files, the app computes the SHA256 hash of the file contents and compares it to the manifest's `sha256` value.
-- If the hash does not match, the tool is marked as **outdated** (shown with an orange refresh icon).
-- Downloads write files atomically to prevent corruption.
+- A tool is considered up to date only when its HTML file **and every one of its assets** exist locally and match their respective `sha256` hashes.
+- If the HTML hash does not match, or any asset is missing or has a mismatched hash, the tool is marked as **outdated** (shown with an orange refresh icon). Re-downloading fetches the HTML and all assets again.
+- Downloads write files atomically to prevent corruption, creating any intermediate asset directories as needed.
 
 ### Download states
 
@@ -109,7 +126,7 @@ Each tool can be in one of these states:
 
 ### Removed tool cleanup
 
-When a new manifest is fetched, any files in the local `tools/` directory that do not correspond to a tool in the new manifest must be automatically deleted. This handles the case where a tool is removed from `assets.json` — its downloaded file should not linger on disk.
+When a new manifest is fetched, any files in the local `tools/` directory that do not correspond to a tool **or one of its assets** in the new manifest must be automatically deleted. This handles the case where a tool (or an asset) is removed from `assets.json` — its downloaded file should not linger on disk. Empty asset subdirectories are also removed.
 
 ### Concurrent downloads
 
