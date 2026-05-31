@@ -88,13 +88,21 @@ class ToolViewModel(app: Application) : AndroidViewModel(app) {
 
     fun deleteLocal(tool: Tool) {
         localFile(tool).delete()
+        tool.assets.forEach { localFile(it.path).delete() }
         _downloadedIds.update { it - tool.id }
         _outdatedIds.update { it - tool.id }
     }
 
     // MARK: - State queries
 
-    fun localFile(tool: Tool): File = File(toolsDir, tool.filename)
+    fun localFile(tool: Tool): File = localFile(tool.path)
+
+    /**
+     * Maps a CDN path to its on-disk location, mirroring the CDN's `tools/`
+     * directory structure so relative asset references in the HTML resolve.
+     */
+    fun localFile(cdnPath: String): File =
+        File(toolsDir, cdnPath.removePrefix("tools/"))
     fun hasLocalFile(tool: Tool) = tool.id in _downloadedIds.value
     fun isDownloaded(tool: Tool) = tool.id in _downloadedIds.value && tool.id !in _outdatedIds.value
     fun isOutdated(tool: Tool) = tool.id in _outdatedIds.value
@@ -128,7 +136,10 @@ class ToolViewModel(app: Application) : AndroidViewModel(app) {
                 val file = localFile(tool)
                 if (!file.exists()) continue
                 d += tool.id
-                if (sha256(file.readBytes()) != tool.sha256) o += tool.id
+                // A tool is up to date only when its HTML and every asset match.
+                if (sha256(file.readBytes()) != tool.sha256 || !assetsUpToDate(tool)) {
+                    o += tool.id
+                }
             }
             d to o
         }
@@ -140,8 +151,13 @@ class ToolViewModel(app: Application) : AndroidViewModel(app) {
         if (tool.id in _downloadingIds.value) return
         _downloadingIds.update { it + tool.id }
         try {
-            val data = withContext(Dispatchers.IO) { URL(tool.downloadURL).readBytes() }
-            withContext(Dispatchers.IO) { localFile(tool).writeBytes(data) }
+            withContext(Dispatchers.IO) {
+                writeFile(localFile(tool), URL(tool.downloadURL).readBytes())
+                // Download all dependent assets (images, etc.) concurrently.
+                tool.assets
+                    .map { asset -> async { writeFile(localFile(asset.path), URL(asset.downloadURL).readBytes()) } }
+                    .awaitAll()
+            }
             _downloadedIds.update { it + tool.id }
             _outdatedIds.update { it - tool.id }
         } catch (_: Exception) {
@@ -149,6 +165,18 @@ class ToolViewModel(app: Application) : AndroidViewModel(app) {
         } finally {
             _downloadingIds.update { it - tool.id }
         }
+    }
+
+    /** True when every asset for the tool exists locally and matches its hash. */
+    private fun assetsUpToDate(tool: Tool): Boolean = tool.assets.all { asset ->
+        val file = localFile(asset.path)
+        file.exists() && sha256(file.readBytes()) == asset.sha256
+    }
+
+    /** Writes bytes to a file, creating any intermediate directories first. */
+    private fun writeFile(file: File, data: ByteArray) {
+        file.parentFile?.mkdirs()
+        file.writeBytes(data)
     }
 
     private fun sha256(data: ByteArray): String =

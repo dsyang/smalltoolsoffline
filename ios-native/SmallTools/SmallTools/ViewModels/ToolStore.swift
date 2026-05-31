@@ -85,10 +85,31 @@ final class ToolStore {
     // MARK: - Filesystem
 
     private func deleteRemovedTools(currentManifestTools: [Tool]) {
-        let knownFilenames = Set(currentManifestTools.map(\.filename))
-        let files = (try? FileManager.default.contentsOfDirectory(at: toolsDirectory, includingPropertiesForKeys: nil)) ?? []
-        for file in files where !knownFilenames.contains(file.lastPathComponent) {
-            try? FileManager.default.removeItem(at: file)
+        let fm = FileManager.default
+        // Every file we expect to keep: each tool's HTML plus all of its assets.
+        var knownPaths = Set<String>()
+        for tool in currentManifestTools {
+            knownPaths.insert(localURL(for: tool).standardizedFileURL.path)
+            for asset in tool.assets {
+                knownPaths.insert(localURL(forRelativePath: asset.path).standardizedFileURL.path)
+            }
+        }
+
+        guard let enumerator = fm.enumerator(at: toolsDirectory, includingPropertiesForKeys: [.isDirectoryKey]) else { return }
+        var directories: [URL] = []
+        for case let url as URL in enumerator {
+            let isDir = (try? url.resourceValues(forKeys: [.isDirectoryKey]))?.isDirectory ?? false
+            if isDir {
+                directories.append(url)
+            } else if !knownPaths.contains(url.standardizedFileURL.path) {
+                try? fm.removeItem(at: url)
+            }
+        }
+        // Remove now-empty asset directories, deepest first.
+        for dir in directories.sorted(by: { $0.path.count > $1.path.count }) {
+            if let contents = try? fm.contentsOfDirectory(atPath: dir.path), contents.isEmpty {
+                try? fm.removeItem(at: dir)
+            }
         }
     }
 
@@ -96,19 +117,37 @@ final class ToolStore {
         downloadedToolIDs = []
         outdatedToolIDs = []
         for tool in tools {
-            let path = localURL(for: tool)
-            guard let data = try? Data(contentsOf: path) else { continue }
+            guard let data = try? Data(contentsOf: localURL(for: tool)) else { continue }
             downloadedToolIDs.insert(tool.id)
-            let hash = SHA256.hash(data: data)
-            let hex = hash.map { String(format: "%02x", $0) }.joined()
-            if hex != tool.sha256 {
+            // A tool is up to date only when its HTML and every asset match.
+            if sha256Hex(of: data) != tool.sha256 || !assetsUpToDate(tool) {
                 outdatedToolIDs.insert(tool.id)
             }
         }
     }
 
+    /// True when every asset for the tool exists locally and matches its hash.
+    private func assetsUpToDate(_ tool: Tool) -> Bool {
+        for asset in tool.assets {
+            guard let data = try? Data(contentsOf: localURL(forRelativePath: asset.path)),
+                  sha256Hex(of: data) == asset.sha256 else { return false }
+        }
+        return true
+    }
+
+    private func sha256Hex(of data: Data) -> String {
+        SHA256.hash(data: data).map { String(format: "%02x", $0) }.joined()
+    }
+
     func localURL(for tool: Tool) -> URL {
-        toolsDirectory.appendingPathComponent(tool.filename)
+        localURL(forRelativePath: tool.path)
+    }
+
+    /// Maps a CDN path to its on-disk location, mirroring the CDN's `tools/`
+    /// directory structure so relative asset references in the HTML resolve.
+    func localURL(forRelativePath path: String) -> URL {
+        let relative = path.hasPrefix("tools/") ? String(path.dropFirst("tools/".count)) : path
+        return toolsDirectory.appendingPathComponent(relative)
     }
 
     func hasLocalFile(_ tool: Tool) -> Bool {
@@ -133,6 +172,9 @@ final class ToolStore {
 
     func deleteLocal(_ tool: Tool) {
         try? FileManager.default.removeItem(at: localURL(for: tool))
+        for asset in tool.assets {
+            try? FileManager.default.removeItem(at: localURL(forRelativePath: asset.path))
+        }
         downloadedToolIDs.remove(tool.id)
         outdatedToolIDs.remove(tool.id)
     }
@@ -146,9 +188,27 @@ final class ToolStore {
         defer { downloadingToolIDs.remove(tool.id) }
 
         let (data, _) = try await URLSession.shared.data(from: tool.downloadURL)
-        try data.write(to: localURL(for: tool), options: .atomic)
+        try write(data, to: localURL(for: tool))
+
+        // Download all dependent assets (images, etc.) concurrently.
+        try await withThrowingTaskGroup(of: Void.self) { group in
+            for asset in tool.assets {
+                group.addTask { [self] in
+                    let (assetData, _) = try await URLSession.shared.data(from: asset.downloadURL)
+                    try write(assetData, to: localURL(forRelativePath: asset.path))
+                }
+            }
+            try await group.waitForAll()
+        }
+
         downloadedToolIDs.insert(tool.id)
         outdatedToolIDs.remove(tool.id)
+    }
+
+    /// Writes data atomically, creating any intermediate directories first.
+    private func write(_ data: Data, to url: URL) throws {
+        try FileManager.default.createDirectory(at: url.deletingLastPathComponent(), withIntermediateDirectories: true)
+        try data.write(to: url, options: .atomic)
     }
 
     @MainActor
