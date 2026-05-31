@@ -1,0 +1,674 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		09884E61D2D710FC041FB476 /* ApifyBackgroundHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 407ACE1C8BA7320B63357F63 /* ApifyBackgroundHandler.swift */; };
+		167727F47AD392516CA0A46A /* ScrapeActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F292551B7B36D7DC46613DD9 /* ScrapeActivityView.swift */; };
+		1C574CC4D9CA389C80CE8ACC /* ApifyService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FF695E2F3153C0B6BE188BB /* ApifyService.swift */; };
+		1D68482DF194F32F3BA9F902 /* NotionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C43273295BDD416FB46EE72 /* NotionService.swift */; };
+		1E237846625A62E40F7EA142 /* ScrapeActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E40246A83915811F80DFD35 /* ScrapeActivityView.swift */; };
+		28D2BCC532FD2FD8AA5AAB1B /* ReelStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA52F2A28F01B511CDE8510D /* ReelStore.swift */; };
+		3D1135478DD318ECE3F12A15 /* AppLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975764D5F510E0E134D3C2EC /* AppLogger.swift */; };
+		46F9A4A55D816EAE265F21B3 /* ApifyBackgroundHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 407ACE1C8BA7320B63357F63 /* ApifyBackgroundHandler.swift */; };
+		4924006531CF39BDDDB8D98C /* ReelListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4325ECFD4CAE7B0D4291BBD6 /* ReelListView.swift */; };
+		4B4EA1F1236297F0803A99A2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8B92B8F1A47A03802E35BAC2 /* Assets.xcassets */; };
+		4C71304A091224BA74EC1B51 /* ShareExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 477C82992C5517AEA9793306 /* ShareExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		4E75CF5F93EF3492A2AB5B03 /* ReelStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA52F2A28F01B511CDE8510D /* ReelStore.swift */; };
+		534E7851CEF6FBEC0EF08AC5 /* ReelScraperWidgetBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE89138D8CD5484CEBF7410E /* ReelScraperWidgetBundle.swift */; };
+		5503450488ACCA2072E01129 /* ScrapeActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB100948889FCDB0B39E6A8 /* ScrapeActivityAttributes.swift */; };
+		57E130888603CD6084849F64 /* ScrapeActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF24B740DA54F4315686BEE6 /* ScrapeActivityAttributes.swift */; };
+		5AC4BFB07A32C8A20E16E28C /* ScrapeActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF24B740DA54F4315686BEE6 /* ScrapeActivityAttributes.swift */; };
+		70FBF736C184C75A5EE27D1D /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24B18B5BEE4A358955EB9FC3 /* Settings.swift */; };
+		890A4DA1F1A52FDC6FB45C23 /* ApifyService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FF695E2F3153C0B6BE188BB /* ApifyService.swift */; };
+		892AB0FF8F72C764717AAB0C /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24B18B5BEE4A358955EB9FC3 /* Settings.swift */; };
+		90F8BF664EB308EA0FDE607E /* ReelScraperApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBE627921ED9B97C81941EB0 /* ReelScraperApp.swift */; };
+		92231651ADE80ED417D33FCA /* NotionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C43273295BDD416FB46EE72 /* NotionService.swift */; };
+		A62114F1BB74D4AF0B11BF7B /* Reel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63AD20BAA438F65CD435EF1D /* Reel.swift */; };
+		B639E3B44BA8311D6E72C0D9 /* ReelRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B259F3226F51D84B7211E6F /* ReelRow.swift */; };
+		B8E2B1F8F62C9B089437233E /* Reel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63AD20BAA438F65CD435EF1D /* Reel.swift */; };
+		BE8BE76B3B3C254FDE885802 /* ReelStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AF9747EAD826D673280230B /* ReelStatus.swift */; };
+		C17DA6EC9D00AE7B8831E0AF /* AppLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975764D5F510E0E134D3C2EC /* AppLogger.swift */; };
+		C87AED5ED050672C8E31A3E7 /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67F714702D1DD410942D6FF /* ShareViewController.swift */; };
+		CFC9AFBB5C31D7A0D02F77F3 /* ReelDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB94AB4CA1A3729B84D86E20 /* ReelDetailView.swift */; };
+		D5DB906074B3071CDA6604AC /* ReelScraperWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 1B976764C392231412990B08 /* ReelScraperWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		DAECF1F4D81DA7469CA3E174 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF1F1CB10773C2ADF7C96C94 /* SettingsView.swift */; };
+		E8D6AF55691BEC9C80C62E95 /* LogsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79891CD590F1005DC95FF2F7 /* LogsView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		217E41FD85C70CAAD8FF5A4B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D91E41008FA3A8083A65A3D8 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A37AE9DC27A2A72864E48CE9;
+			remoteInfo = ReelScraperWidgetExtension;
+		};
+		262E25F71F43A2FF673D0A2E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D91E41008FA3A8083A65A3D8 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = DEF3F50390F3BE5975CFD557;
+			remoteInfo = ShareExtension;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		45F5F45AD4BE72CAC5B75F45 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				4C71304A091224BA74EC1B51 /* ShareExtension.appex in Embed Foundation Extensions */,
+				D5DB906074B3071CDA6604AC /* ReelScraperWidgetExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		1B976764C392231412990B08 /* ReelScraperWidgetExtension.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = ReelScraperWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		1C43273295BDD416FB46EE72 /* NotionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotionService.swift; sourceTree = "<group>"; };
+		24B18B5BEE4A358955EB9FC3 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
+		2AF9747EAD826D673280230B /* ReelStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReelStatus.swift; sourceTree = "<group>"; };
+		407ACE1C8BA7320B63357F63 /* ApifyBackgroundHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApifyBackgroundHandler.swift; sourceTree = "<group>"; };
+		4325ECFD4CAE7B0D4291BBD6 /* ReelListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReelListView.swift; sourceTree = "<group>"; };
+		477C82992C5517AEA9793306 /* ShareExtension.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = ShareExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		494BB2B808A39EC9008C02A1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		4B259F3226F51D84B7211E6F /* ReelRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReelRow.swift; sourceTree = "<group>"; };
+		4FF695E2F3153C0B6BE188BB /* ApifyService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApifyService.swift; sourceTree = "<group>"; };
+		63AD20BAA438F65CD435EF1D /* Reel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reel.swift; sourceTree = "<group>"; };
+		66DF5574A51809CC3D89E927 /* ReelScraper.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = ReelScraper.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		79891CD590F1005DC95FF2F7 /* LogsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogsView.swift; sourceTree = "<group>"; };
+		8B92B8F1A47A03802E35BAC2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		8BB100948889FCDB0B39E6A8 /* ScrapeActivityAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrapeActivityAttributes.swift; sourceTree = "<group>"; };
+		8E40246A83915811F80DFD35 /* ScrapeActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrapeActivityView.swift; sourceTree = "<group>"; };
+		975764D5F510E0E134D3C2EC /* AppLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLogger.swift; sourceTree = "<group>"; };
+		A7012A205DA8015553099A11 /* ShareExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ShareExtension.entitlements; sourceTree = "<group>"; };
+		AF24B740DA54F4315686BEE6 /* ScrapeActivityAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrapeActivityAttributes.swift; sourceTree = "<group>"; };
+		C7E00EE97CA8302F9830B9BB /* ReelScraper.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ReelScraper.entitlements; sourceTree = "<group>"; };
+		CA52F2A28F01B511CDE8510D /* ReelStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReelStore.swift; sourceTree = "<group>"; };
+		D67F714702D1DD410942D6FF /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
+		DB94AB4CA1A3729B84D86E20 /* ReelDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReelDetailView.swift; sourceTree = "<group>"; };
+		DE89138D8CD5484CEBF7410E /* ReelScraperWidgetBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReelScraperWidgetBundle.swift; sourceTree = "<group>"; };
+		E3A2AE874B37E7E789F6DE07 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		E608C072E89DCCFC924487C7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		E87D835F335766B6C1E7D858 /* ReelScraperWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ReelScraperWidgetExtension.entitlements; sourceTree = "<group>"; };
+		EF1F1CB10773C2ADF7C96C94 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		F292551B7B36D7DC46613DD9 /* ScrapeActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrapeActivityView.swift; sourceTree = "<group>"; };
+		FBE627921ED9B97C81941EB0 /* ReelScraperApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReelScraperApp.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		0245092A746579EFF1743CC6 /* ReelScraper */ = {
+			isa = PBXGroup;
+			children = (
+				8B92B8F1A47A03802E35BAC2 /* Assets.xcassets */,
+				494BB2B808A39EC9008C02A1 /* Info.plist */,
+				C7E00EE97CA8302F9830B9BB /* ReelScraper.entitlements */,
+				FBE627921ED9B97C81941EB0 /* ReelScraperApp.swift */,
+				C3BF0420E4A4B2DB1E184705 /* LiveActivity */,
+				4F40E240422EBFAB51A60E14 /* Models */,
+				BCEDB75365BE79EEA76D9064 /* Services */,
+				8BC6EB44F429C692EF4B1DCD /* Views */,
+			);
+			path = ReelScraper;
+			sourceTree = "<group>";
+		};
+		4F40E240422EBFAB51A60E14 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				63AD20BAA438F65CD435EF1D /* Reel.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		59C711976A985B7325DCCDD2 /* ShareExtension */ = {
+			isa = PBXGroup;
+			children = (
+				E608C072E89DCCFC924487C7 /* Info.plist */,
+				A7012A205DA8015553099A11 /* ShareExtension.entitlements */,
+				D67F714702D1DD410942D6FF /* ShareViewController.swift */,
+			);
+			path = ShareExtension;
+			sourceTree = "<group>";
+		};
+		8BC6EB44F429C692EF4B1DCD /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				79891CD590F1005DC95FF2F7 /* LogsView.swift */,
+				DB94AB4CA1A3729B84D86E20 /* ReelDetailView.swift */,
+				4325ECFD4CAE7B0D4291BBD6 /* ReelListView.swift */,
+				4B259F3226F51D84B7211E6F /* ReelRow.swift */,
+				EF1F1CB10773C2ADF7C96C94 /* SettingsView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		9FB8F1067D79F55D89B3A764 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				66DF5574A51809CC3D89E927 /* ReelScraper.app */,
+				1B976764C392231412990B08 /* ReelScraperWidgetExtension.appex */,
+				477C82992C5517AEA9793306 /* ShareExtension.appex */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		B41FDB8DD6F2F091DAB41113 /* ReelScraperWidgetExtension */ = {
+			isa = PBXGroup;
+			children = (
+				E3A2AE874B37E7E789F6DE07 /* Info.plist */,
+				DE89138D8CD5484CEBF7410E /* ReelScraperWidgetBundle.swift */,
+				E87D835F335766B6C1E7D858 /* ReelScraperWidgetExtension.entitlements */,
+				2AF9747EAD826D673280230B /* ReelStatus.swift */,
+				8BB100948889FCDB0B39E6A8 /* ScrapeActivityAttributes.swift */,
+				F292551B7B36D7DC46613DD9 /* ScrapeActivityView.swift */,
+			);
+			path = ReelScraperWidgetExtension;
+			sourceTree = "<group>";
+		};
+		BCEDB75365BE79EEA76D9064 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				407ACE1C8BA7320B63357F63 /* ApifyBackgroundHandler.swift */,
+				4FF695E2F3153C0B6BE188BB /* ApifyService.swift */,
+				975764D5F510E0E134D3C2EC /* AppLogger.swift */,
+				1C43273295BDD416FB46EE72 /* NotionService.swift */,
+				CA52F2A28F01B511CDE8510D /* ReelStore.swift */,
+				24B18B5BEE4A358955EB9FC3 /* Settings.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		C3BF0420E4A4B2DB1E184705 /* LiveActivity */ = {
+			isa = PBXGroup;
+			children = (
+				AF24B740DA54F4315686BEE6 /* ScrapeActivityAttributes.swift */,
+				8E40246A83915811F80DFD35 /* ScrapeActivityView.swift */,
+			);
+			path = LiveActivity;
+			sourceTree = "<group>";
+		};
+		C9D4654E275B12A5227776D8 = {
+			isa = PBXGroup;
+			children = (
+				0245092A746579EFF1743CC6 /* ReelScraper */,
+				B41FDB8DD6F2F091DAB41113 /* ReelScraperWidgetExtension */,
+				59C711976A985B7325DCCDD2 /* ShareExtension */,
+				9FB8F1067D79F55D89B3A764 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		5D4EA9CD0D7E56FFED639E7C /* ReelScraper */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A783D5A0D5BC9AA54E6CCCCC /* Build configuration list for PBXNativeTarget "ReelScraper" */;
+			buildPhases = (
+				59556D3DCBC7C368FAEC57FC /* Sources */,
+				127E5C5B73FD9EEFD01F18C9 /* Resources */,
+				45F5F45AD4BE72CAC5B75F45 /* Embed Foundation Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				09D34E91E0C546099FEAAA5B /* PBXTargetDependency */,
+				AF18E1ACE58D85AB69727B01 /* PBXTargetDependency */,
+			);
+			name = ReelScraper;
+			packageProductDependencies = (
+			);
+			productName = ReelScraper;
+			productReference = 66DF5574A51809CC3D89E927 /* ReelScraper.app */;
+			productType = "com.apple.product-type.application";
+		};
+		A37AE9DC27A2A72864E48CE9 /* ReelScraperWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9D4E887F36807E96240899E2 /* Build configuration list for PBXNativeTarget "ReelScraperWidgetExtension" */;
+			buildPhases = (
+				405D83C65BCCC7B19D95769D /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ReelScraperWidgetExtension;
+			packageProductDependencies = (
+			);
+			productName = ReelScraperWidgetExtension;
+			productReference = 1B976764C392231412990B08 /* ReelScraperWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		DEF3F50390F3BE5975CFD557 /* ShareExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 12FBEEF1C1F7771C20B008D9 /* Build configuration list for PBXNativeTarget "ShareExtension" */;
+			buildPhases = (
+				184FC89114DC2765F0310445 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ShareExtension;
+			packageProductDependencies = (
+			);
+			productName = ShareExtension;
+			productReference = 477C82992C5517AEA9793306 /* ShareExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		D91E41008FA3A8083A65A3D8 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1600;
+				TargetAttributes = {
+					5D4EA9CD0D7E56FFED639E7C = {
+						DevelopmentTeam = S26BJ6U5YF;
+					};
+					A37AE9DC27A2A72864E48CE9 = {
+						DevelopmentTeam = S26BJ6U5YF;
+					};
+					DEF3F50390F3BE5975CFD557 = {
+						DevelopmentTeam = S26BJ6U5YF;
+					};
+				};
+			};
+			buildConfigurationList = 467B97080F43F79281B3ABAC /* Build configuration list for PBXProject "ReelScraper" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = C9D4654E275B12A5227776D8;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				5D4EA9CD0D7E56FFED639E7C /* ReelScraper */,
+				A37AE9DC27A2A72864E48CE9 /* ReelScraperWidgetExtension */,
+				DEF3F50390F3BE5975CFD557 /* ShareExtension */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		127E5C5B73FD9EEFD01F18C9 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4B4EA1F1236297F0803A99A2 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		184FC89114DC2765F0310445 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				46F9A4A55D816EAE265F21B3 /* ApifyBackgroundHandler.swift in Sources */,
+				1C574CC4D9CA389C80CE8ACC /* ApifyService.swift in Sources */,
+				C17DA6EC9D00AE7B8831E0AF /* AppLogger.swift in Sources */,
+				92231651ADE80ED417D33FCA /* NotionService.swift in Sources */,
+				A62114F1BB74D4AF0B11BF7B /* Reel.swift in Sources */,
+				4E75CF5F93EF3492A2AB5B03 /* ReelStore.swift in Sources */,
+				57E130888603CD6084849F64 /* ScrapeActivityAttributes.swift in Sources */,
+				892AB0FF8F72C764717AAB0C /* Settings.swift in Sources */,
+				C87AED5ED050672C8E31A3E7 /* ShareViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		405D83C65BCCC7B19D95769D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				534E7851CEF6FBEC0EF08AC5 /* ReelScraperWidgetBundle.swift in Sources */,
+				BE8BE76B3B3C254FDE885802 /* ReelStatus.swift in Sources */,
+				5503450488ACCA2072E01129 /* ScrapeActivityAttributes.swift in Sources */,
+				167727F47AD392516CA0A46A /* ScrapeActivityView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		59556D3DCBC7C368FAEC57FC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				09884E61D2D710FC041FB476 /* ApifyBackgroundHandler.swift in Sources */,
+				890A4DA1F1A52FDC6FB45C23 /* ApifyService.swift in Sources */,
+				3D1135478DD318ECE3F12A15 /* AppLogger.swift in Sources */,
+				E8D6AF55691BEC9C80C62E95 /* LogsView.swift in Sources */,
+				1D68482DF194F32F3BA9F902 /* NotionService.swift in Sources */,
+				B8E2B1F8F62C9B089437233E /* Reel.swift in Sources */,
+				CFC9AFBB5C31D7A0D02F77F3 /* ReelDetailView.swift in Sources */,
+				4924006531CF39BDDDB8D98C /* ReelListView.swift in Sources */,
+				B639E3B44BA8311D6E72C0D9 /* ReelRow.swift in Sources */,
+				90F8BF664EB308EA0FDE607E /* ReelScraperApp.swift in Sources */,
+				28D2BCC532FD2FD8AA5AAB1B /* ReelStore.swift in Sources */,
+				5AC4BFB07A32C8A20E16E28C /* ScrapeActivityAttributes.swift in Sources */,
+				1E237846625A62E40F7EA142 /* ScrapeActivityView.swift in Sources */,
+				70FBF736C184C75A5EE27D1D /* Settings.swift in Sources */,
+				DAECF1F4D81DA7469CA3E174 /* SettingsView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		09D34E91E0C546099FEAAA5B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = DEF3F50390F3BE5975CFD557 /* ShareExtension */;
+			targetProxy = 262E25F71F43A2FF673D0A2E /* PBXContainerItemProxy */;
+		};
+		AF18E1ACE58D85AB69727B01 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A37AE9DC27A2A72864E48CE9 /* ReelScraperWidgetExtension */;
+			targetProxy = 217E41FD85C70CAAD8FF5A4B /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		08DA0BD078204377FF3239C5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = ReelScraper/ReelScraper.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = S26BJ6U5YF;
+				INFOPLIST_FILE = ReelScraper/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = fyi.imdaniel.reelscraper;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.9;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		09F35A66F44B6AC8701A3E7A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = ReelScraperWidgetExtension/ReelScraperWidgetExtension.entitlements;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = S26BJ6U5YF;
+				INFOPLIST_FILE = ReelScraperWidgetExtension/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = fyi.imdaniel.reelscraper.widget;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.9;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		3EF0EA5C2CA8CCFBA2142C85 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = ShareExtension/ShareExtension.entitlements;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = S26BJ6U5YF;
+				INFOPLIST_FILE = ShareExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Reel Scraper";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = fyi.imdaniel.reelscraper.share;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.9;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		7A7F84BC8FB9EEC54B9847C5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		AF1C8182E49E060AAF74B022 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = ReelScraperWidgetExtension/ReelScraperWidgetExtension.entitlements;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = S26BJ6U5YF;
+				INFOPLIST_FILE = ReelScraperWidgetExtension/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = fyi.imdaniel.reelscraper.widget;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.9;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		C3D08D2BEFA3EA1F434B0B19 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		E1E441650658513E4AEBF56B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = ShareExtension/ShareExtension.entitlements;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = S26BJ6U5YF;
+				INFOPLIST_FILE = ShareExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Reel Scraper";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = fyi.imdaniel.reelscraper.share;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.9;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		E8B9929E4ADFCCF2922DC671 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = ReelScraper/ReelScraper.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = S26BJ6U5YF;
+				INFOPLIST_FILE = ReelScraper/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = fyi.imdaniel.reelscraper;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.9;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		12FBEEF1C1F7771C20B008D9 /* Build configuration list for PBXNativeTarget "ShareExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3EF0EA5C2CA8CCFBA2142C85 /* Debug */,
+				E1E441650658513E4AEBF56B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		467B97080F43F79281B3ABAC /* Build configuration list for PBXProject "ReelScraper" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7A7F84BC8FB9EEC54B9847C5 /* Debug */,
+				C3D08D2BEFA3EA1F434B0B19 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		9D4E887F36807E96240899E2 /* Build configuration list for PBXNativeTarget "ReelScraperWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AF1C8182E49E060AAF74B022 /* Debug */,
+				09F35A66F44B6AC8701A3E7A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		A783D5A0D5BC9AA54E6CCCCC /* Build configuration list for PBXNativeTarget "ReelScraper" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E8B9929E4ADFCCF2922DC671 /* Debug */,
+				08DA0BD078204377FF3239C5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = D91E41008FA3A8083A65A3D8 /* Project object */;
+}

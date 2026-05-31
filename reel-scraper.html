@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Extract IG reel captions via Apify" />
+  <title>Reel Scraper</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #0e0e10;
+      --surface: #1a1a1f;
+      --border: #2a2a32;
+      --text: #e4e4e8;
+      --text-dim: #7a7a85;
+      --accent: #c850c0;
+      --accent-2: #4158d0;
+      --error: #ff6b6b;
+      --success: #51cf66;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100dvh;
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+    }
+
+    h1 {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.1rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 1.5rem;
+    }
+
+    .field {
+      margin-bottom: 1rem;
+    }
+
+    label {
+      display: block;
+      font-size: 0.7rem;
+      font-family: 'JetBrains Mono', monospace;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-dim);
+      margin-bottom: 0.4rem;
+    }
+
+    input {
+      width: 100%;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.8rem 1rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82rem;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    input:focus {
+      border-color: var(--accent);
+    }
+
+    input::placeholder {
+      color: #44444d;
+    }
+
+    input[type="password"] {
+      letter-spacing: 0.1em;
+    }
+
+    button {
+      width: 100%;
+      padding: 0.85rem;
+      border: none;
+      border-radius: 10px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: white;
+      margin-top: 0.5rem;
+      transition: opacity 0.2s, transform 0.1s;
+    }
+
+    button:active {
+      transform: scale(0.98);
+    }
+
+    button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .output-area {
+      margin-top: 1.5rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .output-label {
+      font-size: 0.7rem;
+      font-family: 'JetBrains Mono', monospace;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-dim);
+      margin-bottom: 0.4rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .status {
+      font-size: 0.65rem;
+      padding: 0.15rem 0.5rem;
+      border-radius: 20px;
+      text-transform: none;
+      letter-spacing: normal;
+    }
+
+    .status.loading {
+      background: rgba(200, 80, 192, 0.15);
+      color: var(--accent);
+    }
+
+    .status.success {
+      background: rgba(81, 207, 102, 0.15);
+      color: var(--success);
+    }
+
+    .status.error {
+      background: rgba(255, 107, 107, 0.15);
+      color: var(--error);
+    }
+
+    .output-box {
+      flex: 1;
+      min-height: 180px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem;
+      line-height: 1.6;
+      color: var(--text);
+      white-space: pre-wrap;
+      word-break: break-word;
+      overflow-y: auto;
+    }
+
+    .output-box.empty {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #33333d;
+      font-size: 0.75rem;
+    }
+
+    .copy-btn {
+      width: auto;
+      margin: 0;
+      padding: 0.15rem 0.5rem;
+      font-size: 0.65rem;
+      font-family: 'JetBrains Mono', monospace;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text-dim);
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .copy-btn:active {
+      transform: scale(0.95);
+    }
+
+    .log-toggle {
+      width: auto;
+      margin: 1rem 0 0.4rem;
+      padding: 0.3rem 0.7rem;
+      font-size: 0.65rem;
+      font-family: 'JetBrains Mono', monospace;
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-dim);
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .log-box {
+      background: #111114;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.75rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem;
+      line-height: 1.7;
+      color: var(--text-dim);
+      max-height: 250px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      word-break: break-all;
+      display: none;
+    }
+
+    .log-box.open { display: block; }
+
+    .log-line { margin-bottom: 2px; }
+    .log-line .ts { color: #44444d; margin-right: 0.4em; }
+    .log-line.info { color: var(--text-dim); }
+    .log-line.warn { color: #fcc419; }
+    .log-line.err { color: var(--error); }
+    .log-line.ok { color: var(--success); }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    .loading-dots::after {
+      content: '';
+      animation: dots 1.5s steps(4) infinite;
+    }
+
+    @keyframes dots {
+      0% { content: ''; }
+      25% { content: '.'; }
+      50% { content: '..'; }
+      75% { content: '...'; }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>reel_scraper</h1>
+
+  <div class="field">
+    <label>Apify API Token</label>
+    <input type="password" id="apiKey" placeholder="apify_api_xxxxxxxx" />
+  </div>
+
+  <div class="field">
+    <label>Instagram Reel URL</label>
+    <input type="text" id="reelUrl" placeholder="https://www.instagram.com/reel/..." />
+  </div>
+
+  <button id="scrapeBtn" onclick="scrape()">Extract Caption</button>
+
+  <div class="output-area">
+    <div class="output-label">
+      <span>Output</span>
+      <span id="statusBadge"></span>
+    </div>
+    <div class="output-box empty" id="output">paste a link and hit extract</div>
+  </div>
+
+  <button class="log-toggle" id="logToggle" onclick="toggleLog()">▸ debug log</button>
+  <div class="log-box" id="logBox"></div>
+
+  <script>
+    const ACTOR_ID = 'apify~instagram-reel-scraper';
+
+    function log(msg, level = 'info') {
+      const box = document.getElementById('logBox');
+      const ts = new Date().toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' });
+      const line = document.createElement('div');
+      line.className = `log-line ${level}`;
+      line.innerHTML = `<span class="ts">${ts}</span>${msg}`;
+      box.appendChild(line);
+      box.scrollTop = box.scrollHeight;
+    }
+
+    function toggleLog() {
+      const box = document.getElementById('logBox');
+      const btn = document.getElementById('logToggle');
+      const open = box.classList.toggle('open');
+      btn.textContent = open ? '▾ debug log' : '▸ debug log';
+    }
+
+    function setStatus(type, text) {
+      const badge = document.getElementById('statusBadge');
+      badge.className = 'status ' + type;
+      badge.innerHTML = text;
+    }
+
+    function setOutput(text, isEmpty) {
+      const box = document.getElementById('output');
+      box.textContent = text;
+      box.className = 'output-box' + (isEmpty ? ' empty' : '');
+    }
+
+    function cleanUrl(url) {
+      try {
+        const u = new URL(url.trim());
+        const cleaned = u.origin + u.pathname;
+        log(`cleaned url: ${cleaned}`);
+        return cleaned;
+      } catch (e) {
+        log(`url parse failed, using raw: ${e.message}`, 'warn');
+        return url.trim();
+      }
+    }
+
+    async function scrape() {
+      const apiKey = document.getElementById('apiKey').value.trim();
+      const rawUrl = document.getElementById('reelUrl').value.trim();
+
+      // Auto-open log on scrape
+      document.getElementById('logBox').classList.add('open');
+      document.getElementById('logToggle').textContent = '▾ debug log';
+
+      log('--- new scrape ---');
+      log(`api key: ${apiKey ? apiKey.slice(0, 12) + '...' : '(empty)'}`);
+      log(`raw url: ${rawUrl || '(empty)'}`);
+
+      if (!apiKey) { setStatus('error', 'need api key'); log('aborted: no api key', 'err'); return; }
+      if (!rawUrl) { setStatus('error', 'need url'); log('aborted: no url', 'err'); return; }
+
+      const url = cleanUrl(rawUrl);
+      const btn = document.getElementById('scrapeBtn');
+      btn.disabled = true;
+      btn.textContent = 'Scraping...';
+      setStatus('loading', 'running actor<span class="loading-dots"></span>');
+      setOutput('waiting for apify...', true);
+
+      const payload = {
+        username: [url],
+        resultsLimit: 1,
+        includeDownloadedVideo: false,
+        includeSharesCount: false,
+        includeTranscript: false,
+        skipPinnedPosts: false
+      };
+
+      log(`actor: ${ACTOR_ID}`);
+      log(`endpoint: POST run-sync-get-dataset-items`);
+      log(`payload: ${JSON.stringify(payload)}`);
+
+      try {
+        // Try synchronous run first (waits up to 300s)
+        log('sending sync request (up to 300s timeout)...');
+        const startTime = Date.now();
+        const syncUrl = `https://api.apify.com/v2/acts/${ACTOR_ID}/run-sync-get-dataset-items`;
+        const res = await fetch(syncUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${apiKey}`
+          },
+          body: JSON.stringify(payload)
+        });
+
+        const elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
+        log(`response: ${res.status} ${res.statusText} (${elapsed}s)`, res.ok ? 'ok' : 'err');
+
+        const contentType = res.headers.get('content-type');
+        log(`content-type: ${contentType}`);
+
+        const rawBody = await res.text();
+        log(`body length: ${rawBody.length} chars`);
+
+        if (rawBody.length < 2000) {
+          log(`raw body: ${rawBody}`, res.ok ? 'info' : 'warn');
+        } else {
+          log(`raw body (first 1500): ${rawBody.slice(0, 1500)}...`, 'info');
+        }
+
+        // If we got a 408 or the run info back (not dataset items), fall back to async
+        if (res.status === 408 || (res.ok && rawBody.includes('"status"') && rawBody.includes('"RUNNING"'))) {
+          log('sync timed out, falling back to async polling...', 'warn');
+          throw new Error('ASYNC_FALLBACK');
+        }
+
+        if (!res.ok) {
+          let msg = `Apify returned ${res.status}`;
+          try {
+            const errJson = JSON.parse(rawBody);
+            if (errJson.error?.message) msg = errJson.error.message;
+            log(`parsed error: ${JSON.stringify(errJson.error || errJson)}`, 'err');
+          } catch {
+            log(`body is not json`, 'warn');
+          }
+          throw new Error(msg);
+        }
+
+        let data;
+        try {
+          data = JSON.parse(rawBody);
+          log(`parsed ${Array.isArray(data) ? data.length : 'non-array'} result(s)`, 'ok');
+        } catch (e) {
+          log(`json parse failed: ${e.message}`, 'err');
+          throw new Error('Response was not valid JSON');
+        }
+
+        processResults(data);
+
+      } catch (err) {
+        if (err.message === 'ASYNC_FALLBACK') {
+          // Start a normal run then poll for results
+          try {
+            log('starting async run...');
+            const runUrl = `https://api.apify.com/v2/acts/${ACTOR_ID}/runs`;
+            const runRes = await fetch(runUrl, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${apiKey}`
+              },
+              body: JSON.stringify(payload)
+            });
+            const runData = await runRes.json();
+            const runId = runData?.data?.id;
+            if (!runId) throw new Error('Failed to start async run');
+            log(`run started: ${runId}`, 'ok');
+
+            // Poll until done
+            let status = 'RUNNING';
+            while (status === 'RUNNING' || status === 'READY') {
+              await new Promise(r => setTimeout(r, 3000));
+              const pollRes = await fetch(`https://api.apify.com/v2/actor-runs/${runId}`, {
+                headers: { 'Authorization': `Bearer ${apiKey}` }
+              });
+              const pollData = await pollRes.json();
+              status = pollData?.data?.status;
+              log(`poll: ${status}`);
+              setOutput(`waiting for apify... (${status})`, true);
+            }
+
+            if (status !== 'SUCCEEDED') throw new Error(`Run finished with status: ${status}`);
+
+            // Fetch dataset
+            const runDetailRes = await fetch(`https://api.apify.com/v2/actor-runs/${runId}`, {
+              headers: { 'Authorization': `Bearer ${apiKey}` }
+            });
+            const runDetail = await runDetailRes.json();
+            const datasetId = runDetail?.data?.defaultDatasetId;
+            log(`dataset: ${datasetId}`, 'ok');
+
+            const itemsRes = await fetch(`https://api.apify.com/v2/datasets/${datasetId}/items`, {
+              headers: { 'Authorization': `Bearer ${apiKey}` }
+            });
+            const items = await itemsRes.json();
+            log(`got ${items.length} items from dataset`, 'ok');
+            processResults(items);
+          } catch (asyncErr) {
+            setStatus('error', 'failed');
+            setOutput('Error: ' + asyncErr.message, false);
+            log(`ASYNC FAILED: ${asyncErr.message}`, 'err');
+          }
+        } else {
+          setStatus('error', 'failed');
+          setOutput('Error: ' + err.message, false);
+          log(`FAILED: ${err.message}`, 'err');
+        }
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Extract Caption';
+      }
+    }
+
+    function processResults(data) {
+      if (!data || (Array.isArray(data) && data.length === 0)) {
+        log('empty dataset returned', 'warn');
+        setStatus('error', 'failed');
+        setOutput('Actor returned no results. The reel may be private or the URL invalid.', false);
+        return;
+      }
+
+      const reel = Array.isArray(data) ? data[0] : data;
+      log(`result keys: ${Object.keys(reel).join(', ')}`, 'ok');
+
+      const parts = [];
+
+      if (reel.ownerUsername || reel.author || reel.username) {
+        const author = reel.ownerUsername || reel.author || reel.username;
+        parts.push(`@${author}`);
+        log(`author: @${author}`, 'ok');
+      }
+
+      const caption = reel.caption || reel.text || reel.description || reel.title || '';
+      if (caption) {
+        parts.push('');
+        parts.push(caption);
+        log(`caption: ${caption.slice(0, 100)}${caption.length > 100 ? '...' : ''}`, 'ok');
+      } else {
+        log('no caption field found in result', 'warn');
+      }
+
+      if (reel.hashtags && reel.hashtags.length) {
+        parts.push('');
+        parts.push('Hashtags: ' + reel.hashtags.join(', '));
+      }
+
+      if (reel.likesCount != null || reel.viewsCount != null) {
+        parts.push('');
+        const metrics = [];
+        if (reel.viewsCount != null) metrics.push(`${reel.viewsCount.toLocaleString()} views`);
+        if (reel.likesCount != null) metrics.push(`${reel.likesCount.toLocaleString()} likes`);
+        if (reel.commentsCount != null) metrics.push(`${reel.commentsCount.toLocaleString()} comments`);
+        parts.push(metrics.join(' · '));
+        log(`metrics: ${metrics.join(', ')}`, 'ok');
+      }
+
+      if (parts.length === 0) {
+        log('no known fields matched, dumping raw json', 'warn');
+        parts.push(JSON.stringify(reel, null, 2));
+      }
+
+      setOutput(parts.join('\n'), false);
+      setStatus('success', 'done');
+      log('done ✓', 'ok');
+
+      const label = document.querySelector('.output-label');
+      let existing = label.querySelector('.copy-btn');
+      if (!existing) {
+        const copyBtn = document.createElement('button');
+        copyBtn.className = 'copy-btn';
+        copyBtn.textContent = 'copy';
+        copyBtn.onclick = () => {
+          navigator.clipboard.writeText(document.getElementById('output').textContent);
+          copyBtn.textContent = 'copied';
+          setTimeout(() => copyBtn.textContent = 'copy', 1500);
+        };
+        label.appendChild(copyBtn);
+      }
+    }
+
+    // Allow Enter key on the URL field to trigger scrape
+    document.getElementById('reelUrl').addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') scrape();
+    });
+  </script>
+</body>
+</html>
