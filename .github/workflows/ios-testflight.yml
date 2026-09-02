@@ -4,6 +4,10 @@ name: ios-testflight
 # TestFlight. Run from the Actions tab ("Run workflow") when you're ready to
 # ship a build — this never fires automatically on push.
 #
+# Runs on the latest GitHub-hosted macOS image with its latest stable Xcode
+# (Xcode 26 as of macOS 26 runners). Both float forward automatically as
+# GitHub updates its images.
+#
 # Required repo secrets (App Store Connect API key, scoped to App Manager
 # access on the fyi.imdaniel.smalltools.native app):
 #   APP_STORE_CONNECT_KEY_ID      - the API key's Key ID
@@ -21,7 +25,7 @@ on:
 
 jobs:
   build-and-upload:
-    runs-on: macos-15
+    runs-on: macos-latest
     defaults:
       run:
         working-directory: ios-native/SmallTools
@@ -30,7 +34,7 @@ jobs:
 
       - uses: maxim-lobanov/setup-xcode@v1
         with:
-          xcode-version: "16.0"
+          xcode-version: latest-stable
 
       - name: Install XcodeGen
         run: brew install xcodegen
