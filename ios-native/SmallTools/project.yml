@@ -8,6 +8,7 @@ targets:
   SmallTools:
     type: application
     platform: iOS
+    scheme: {}
     sources:
       - SmallTools
     info:
