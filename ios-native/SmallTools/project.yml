@@ -15,6 +15,7 @@ targets:
       path: SmallTools/Info.plist
       properties:
         CFBundleDisplayName: Offline Toolkit
+        ITSAppUsesNonExemptEncryption: false
         UILaunchScreen: {}
         CFBundleURLTypes:
           - CFBundleTypeRole: Editor
