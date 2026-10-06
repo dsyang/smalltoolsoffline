@@ -8,12 +8,14 @@ targets:
   SmallTools:
     type: application
     platform: iOS
+    scheme: {}
     sources:
       - SmallTools
     info:
       path: SmallTools/Info.plist
       properties:
         CFBundleDisplayName: Offline Toolkit
+        ITSAppUsesNonExemptEncryption: false
         UILaunchScreen: {}
         CFBundleURLTypes:
           - CFBundleTypeRole: Editor
