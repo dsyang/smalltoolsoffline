@@ -15,6 +15,8 @@ targets:
       path: SmallTools/Info.plist
       properties:
         CFBundleDisplayName: Offline Toolkit
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
         ITSAppUsesNonExemptEncryption: false
         UILaunchScreen: {}
         CFBundleURLTypes:
@@ -25,7 +27,7 @@ targets:
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: fyi.imdaniel.smalltools.native
-        MARKETING_VERSION: "1.0.0"
+        MARKETING_VERSION: "1.0"
         CURRENT_PROJECT_VERSION: "1"
         DEVELOPMENT_TEAM: S26BJ6U5YF
         TARGETED_DEVICE_FAMILY: "1"
