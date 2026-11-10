@@ -28,6 +28,8 @@ final class WebViewPool {
         let webView = WKWebView(frame: .zero, configuration: config)
         webView.isInspectable = true
         webView.scrollView.bounces = false
+        // Let the page handle safe areas itself via env(safe-area-inset-*) instead of UIKit shifting content
+        webView.scrollView.contentInsetAdjustmentBehavior = .never
         webView.isOpaque = false
         webView.backgroundColor = .clear
         return webView
