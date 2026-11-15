@@ -33,8 +33,7 @@ enum CurrencyWidgetStyle {
     }
 
     /// Four decimals under 1 so small rates stay readable. Otherwise the web tool's rate-chip precision
-    /// for the target: JPY whole units, EUR and GBP four places, the rest two. TWD stays at two places
-    /// here even though CurrencyCore's fractionDigits is 0 for TWD, since a rate of 32.5 must not read as 33.
+    /// for the target: JPY whole units, EUR and GBP four places, the rest two.
     private static func rateDecimals(_ rate: Double, to: Currency) -> Int {
         if rate < 1 { return 4 }
         switch to {

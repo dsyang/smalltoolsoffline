@@ -201,7 +201,7 @@ A WidgetKit widget that shows exchange rates for one currency pair. This is iOS-
 
 **Configuration:** long-press the widget and choose Edit Widget. The **From** and **To** pickers list USD, EUR, GBP, TWD (NTD), JPY, CNY (RMB) and CAD. The default pair is USD → TWD. There are no other settings.
 
-**Amounts:** the preset source amounts come from the shared formatter. For example, USD uses 1, 5, 10, 20, 50 and 100. Amounts include the currency symbol and thousands separators. JPY and TWD show whole units, for example `NT$32,500` or `¥1,000`.
+**Amounts:** the preset source amounts come from the shared formatter. For example, USD uses 1, 5, 10, 20, 50 and 100. Amounts include the currency symbol and thousands separators. JPY shows whole units (`¥1,000`); every other currency, including TWD, shows two decimals (`NT$32,500.00`).
 
 **Refresh:** WidgetKit reloads the timeline at or after 3 hours. The system chooses the exact time. Each timeline has an entry every 30 minutes across those 3 hours, so the freshness footer stays current between reloads.
 
