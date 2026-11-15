@@ -8,7 +8,7 @@ public enum AmountFormatter {
     private static let placeholder = "—"
 
     /// Formats `amount` as the web tool does: currency symbol, en_US thousands grouping and
-    /// `fractionDigits` decimals. For example "$1,234.50", "¥1,000", "NT$32,500".
+    /// `fractionDigits` decimals. For example "$1,234.50", "¥1,000", "NT$32,500.00".
     ///
     /// Rounding is decided on the exact binary value, as JavaScript's toFixed does, so 1.005
     /// shows as "$1.00" and 0.125 as "$0.13". Ties round away from zero. A negative amount gets

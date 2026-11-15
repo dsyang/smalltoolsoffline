@@ -36,11 +36,11 @@ public enum Currency: String, CaseIterable, Codable, Sendable, Hashable {
         }
     }
 
-    /// Digits shown after the decimal point. JPY and TWD are whole-unit currencies here.
+    /// Digits shown after the decimal point. JPY is the only whole-unit currency.
     public var fractionDigits: Int {
         switch self {
-        case .jpy, .twd: return 0
-        case .usd, .eur, .gbp, .cny, .cad: return 2
+        case .jpy: return 0
+        case .usd, .eur, .gbp, .twd, .cny, .cad: return 2
         }
     }
 }

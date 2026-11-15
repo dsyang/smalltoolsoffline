@@ -17,15 +17,15 @@ final class AmountFormatterTests: XCTestCase {
         XCTAssertEqual(AmountFormatter.format(1234.5, in: .usd), "$1,234.50")
         XCTAssertEqual(AmountFormatter.format(1234.5, in: .eur), "€1,234.50")
         XCTAssertEqual(AmountFormatter.format(1234.5, in: .gbp), "£1,234.50")
-        XCTAssertEqual(AmountFormatter.format(1234.5, in: .twd), "NT$1,235")
+        XCTAssertEqual(AmountFormatter.format(1234.5, in: .twd), "NT$1,234.50")
         XCTAssertEqual(AmountFormatter.format(1234.5, in: .jpy), "¥1,235")
         XCTAssertEqual(AmountFormatter.format(1234.5, in: .cny), "CN¥1,234.50")
         XCTAssertEqual(AmountFormatter.format(1234.5, in: .cad), "C$1,234.50")
     }
 
-    func testWholeUnitCurrenciesHaveNoDecimals() {
+    func testJPYHasNoDecimals() {
         XCTAssertEqual(AmountFormatter.format(1000, in: .jpy), "¥1,000")
-        XCTAssertEqual(AmountFormatter.format(32500, in: .twd), "NT$32,500")
+        XCTAssertEqual(AmountFormatter.format(32500, in: .jpy), "¥32,500")
     }
 
     func testTwoDecimalCurrenciesAlwaysShowCents() {
@@ -34,6 +34,7 @@ final class AmountFormatterTests: XCTestCase {
         XCTAssertEqual(AmountFormatter.format(0.5, in: .gbp), "£0.50")
         XCTAssertEqual(AmountFormatter.format(999.5, in: .usd), "$999.50")
         XCTAssertEqual(AmountFormatter.format(7.25, in: .cny), "CN¥7.25")
+        XCTAssertEqual(AmountFormatter.format(32500, in: .twd), "NT$32,500.00")
     }
 
     func testThousandsGrouping() {
@@ -70,13 +71,18 @@ final class AmountFormatterTests: XCTestCase {
         XCTAssertEqual(AmountFormatter.format(999.5, in: .jpy), "¥1,000")
     }
 
-    func testWholeUnitHalfwayAmountsRoundUp() {
+    func testJPYHalfwayAmountsRoundUp() {
         XCTAssertEqual(AmountFormatter.format(2.5, in: .jpy), "¥3")
         XCTAssertEqual(AmountFormatter.format(0.5, in: .jpy), "¥1")
-        XCTAssertEqual(AmountFormatter.format(1.5, in: .twd), "NT$2")
         XCTAssertEqual(AmountFormatter.format(1234.5, in: .jpy), "¥1,235")
         XCTAssertEqual(AmountFormatter.format(0.49999999999999994, in: .jpy), "¥0")
         XCTAssertEqual(AmountFormatter.format(0.4, in: .jpy), "¥0")
+    }
+
+    func testTWDHalfwayAmountsRoundToCents() {
+        XCTAssertEqual(AmountFormatter.format(0.125, in: .twd), "NT$0.13")
+        XCTAssertEqual(AmountFormatter.format(1.005, in: .twd), "NT$1.00")
+        XCTAssertEqual(AmountFormatter.format(31.999, in: .twd), "NT$32.00")
     }
 
     // MARK: Negative, zero and degenerate amounts
@@ -84,7 +90,7 @@ final class AmountFormatterTests: XCTestCase {
     func testNegativeAmountsKeepTheSignBeforeTheSymbol() {
         XCTAssertEqual(AmountFormatter.format(-1234.5, in: .usd), "-$1,234.50")
         XCTAssertEqual(AmountFormatter.format(-0.005, in: .usd), "-$0.01")
-        XCTAssertEqual(AmountFormatter.format(-32500, in: .twd), "-NT$32,500")
+        XCTAssertEqual(AmountFormatter.format(-32500, in: .twd), "-NT$32,500.00")
         // Ties round away from zero for negatives too (the web tool's Math.round gives "¥-2" here).
         XCTAssertEqual(AmountFormatter.format(-2.5, in: .jpy), "-¥3")
     }
@@ -98,7 +104,7 @@ final class AmountFormatterTests: XCTestCase {
     func testZeroAmounts() {
         XCTAssertEqual(AmountFormatter.format(0, in: .usd), "$0.00")
         XCTAssertEqual(AmountFormatter.format(0, in: .jpy), "¥0")
-        XCTAssertEqual(AmountFormatter.format(0, in: .twd), "NT$0")
+        XCTAssertEqual(AmountFormatter.format(0, in: .twd), "NT$0.00")
         XCTAssertEqual(AmountFormatter.format(0, in: .cny), "CN¥0.00")
     }
 
@@ -175,8 +181,8 @@ final class AmountFormatterTests: XCTestCase {
         XCTAssertEqual(AmountFormatter.presets(for: .twd), [100, 500, 1000, 2000, 5000, 10000])
     }
 
-    func testWholeUnitPresetsAreIntegers() {
-        for currency in [Currency.jpy, .twd] {
+    func testPresetsAreWholeAmounts() {
+        for currency in Currency.allCases {
             XCTAssertTrue(AmountFormatter.presets(for: currency).allSatisfy { $0 == $0.rounded() }, "\(currency)")
         }
     }

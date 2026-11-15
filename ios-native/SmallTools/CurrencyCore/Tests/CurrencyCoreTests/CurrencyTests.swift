@@ -25,11 +25,12 @@ final class CurrencyTests: XCTestCase {
         XCTAssertEqual(Currency.twd.displayName, "Taiwan Dollar (NTD)")
     }
 
-    func testFractionDigitsAreZeroOnlyForJPYAndTWD() {
+    func testFractionDigitsAreZeroOnlyForJPY() {
         for currency in Currency.allCases {
-            let expected = (currency == .jpy || currency == .twd) ? 0 : 2
+            let expected = currency == .jpy ? 0 : 2
             XCTAssertEqual(currency.fractionDigits, expected, "\(currency)")
         }
+        XCTAssertEqual(Currency.twd.fractionDigits, 2)
     }
 
     func testCodableUsesISOCodeAsRawValue() throws {
