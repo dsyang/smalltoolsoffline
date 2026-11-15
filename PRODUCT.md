@@ -183,6 +183,43 @@ To avoid cold-start delays when navigating to a tool, the app pre-creates ("warm
 - Shortcut phrases: "Open {Tool} in Small Tools", "Launch {Tool} in Small Tools".
 - Opens the app and navigates to the tool via deep link.
 
+#### iOS Home Screen Widget (Currency Converter)
+
+A WidgetKit widget that shows exchange rates for one currency pair. This is iOS-only for now, and Android has no equivalent. It is a different feature from the Android Glance widget under [Home Screen Widget](#home-screen-widget), which launches a tool.
+
+**Widget kind:** `CurrencyWidget`. Gallery name: "Currency Converter".
+
+**Families:**
+
+- **Small:** header, the first four preset amounts with their conversions, and the freshness footer.
+- **Medium:** header, the six preset amounts in a 2 x 3 grid (source amount on the left, converted amount on the right), and the freshness footer.
+- **Lock Screen (rectangular):** pair, rate, and freshness footer. The system tints this family, so it has no background and no accent colors.
+
+**Header:** the pair as `FROM → TO` (for example `USD → NTD`), then the rate (for example `1 USD = 32.50 NTD`). The pair uses the source currency's accent color, from the web tool: USD green, EUR yellow, NTD pink, JPY blue. Light mode uses darker shades of these. GBP, CNY and CAD use the primary text color. Rates below 1 show four decimals.
+
+**Currency names:** TWD is shown as **NTD**, as on the web tool. Other currencies use their ISO codes.
+
+**Configuration:** long-press the widget and choose Edit Widget. The **From** and **To** pickers list USD, EUR, GBP, TWD (NTD), JPY, CNY (RMB) and CAD. The default pair is USD → TWD. There are no other settings.
+
+**Amounts:** the preset source amounts come from the shared formatter. For example, USD uses 1, 5, 10, 20, 50 and 100. Amounts include the currency symbol and thousands separators. JPY and TWD show whole units, for example `NT$32,500` or `¥1,000`.
+
+**Refresh:** WidgetKit reloads the timeline at or after 3 hours. The system chooses the exact time. Each timeline has an entry every 30 minutes across those 3 hours, so the freshness footer stays current between reloads.
+
+**Rates:** the widget fetches rates itself. It has no App Group and shares no storage with the app. Sources are tried in order: `https://open.er-api.com/v6/latest/USD`, then `https://api.exchangerate-api.com/v4/latest/USD`. The first response that has a usable rate for every supported currency is used and cached. Conversions go through USD.
+
+**Matches the web tool:** the sources, their order, the fallback rates, the USD pivot and the NTD label follow [Currency Converter](https://code.imdaniel.fyi/tools/currency-universal.html). The logic lives in `ios-native/SmallTools/CurrencyCore/` and is compiled into the widget extension. The app does not depend on it.
+
+**Offline and fallback:**
+
+- If the network fails, the widget uses the last successful rates from its cache file (`rates.json` in its caches directory).
+- If nothing is cached, it uses the built-in fallback rates (the web tool's `FALLBACK_RATES`: EUR 0.92, GBP 0.79, TWD 32.5, JPY 150, CNY 7.2 and CAD 1.37 per USD). The footer then reads "Offline rates".
+- The widget always shows rates and never an error state.
+- The gallery preview and the placeholder use the built-in fallback rates and make no network request.
+
+**Freshness footer:** "Updated just now", "Updated 25m ago", "Updated 2h ago", "Updated 3d ago", or "Offline rates".
+
+**Tap action:** opens the app and navigates to the Currency Converter tool through the deep link `smalltools://open/currency-universal`. The slug is the filename of the tool's path in the manifest (`tools/currency-universal.html`). The tool downloads on open if it is not on the device yet. If the manifest no longer lists the tool, the app opens to the tool list.
+
 ### Android Only
 
 _(No Android-only features at this time. The home screen widget is being promoted to a cross-platform feature — see below.)_
