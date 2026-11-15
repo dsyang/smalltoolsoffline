@@ -22,14 +22,26 @@ enum CurrencyWidgetStyle {
         }
     }
 
-    /// "1 USD = 32.50 NTD". Rates under 1 get four decimals so small rates stay readable.
+    /// "1 USD = 32.50 NTD".
     static func rateLine(from: Currency, to: Currency, table: RateTable) -> String {
         let rate = table.rate(from: from, to: to)
         guard rate.isFinite, rate > 0 else {
             return "1 \(from.widgetLabel) = — \(to.widgetLabel)"
         }
-        let digits = rate < 1 ? 4 : to.fractionDigits
-        return "1 \(from.widgetLabel) = \(decimalString(rate, fractionDigits: digits)) \(to.widgetLabel)"
+        let text = decimalString(rate, fractionDigits: rateDecimals(rate, to: to))
+        return "1 \(from.widgetLabel) = \(text) \(to.widgetLabel)"
+    }
+
+    /// Four decimals under 1 so small rates stay readable. Otherwise the web tool's rate-chip precision
+    /// for the target: JPY whole units, EUR and GBP four places, the rest two. TWD stays at two places
+    /// here even though CurrencyCore's fractionDigits is 0 for TWD, since a rate of 32.5 must not read as 33.
+    private static func rateDecimals(_ rate: Double, to: Currency) -> Int {
+        if rate < 1 { return 4 }
+        switch to {
+        case .jpy: return 0
+        case .eur, .gbp: return 4
+        case .usd, .twd, .cny, .cad: return 2
+        }
     }
 
     /// Amount text from the shared formatter, used for preset source amounts and converted values.

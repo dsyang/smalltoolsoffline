@@ -13,6 +13,10 @@ struct CurrencyProvider: AppIntentTimelineProvider {
     /// How long WidgetKit should wait before asking for a new timeline.
     static let refreshInterval: TimeInterval = 3 * 60 * 60
 
+    /// Spacing between entries inside one timeline. Each entry's freshness label is computed at its own
+    /// date, so "Updated 30m ago" advances without waiting for the next reload.
+    static let entryInterval: TimeInterval = 30 * 60
+
     func placeholder(in context: Context) -> CurrencyEntry {
         let now = Date()
         return CurrencyEntry(date: now, table: .fallback(now: now), from: .usd, to: .twd)
@@ -29,8 +33,8 @@ struct CurrencyProvider: AppIntentTimelineProvider {
         )
     }
 
-    /// RateProvider never throws. It returns live rates, else the last good cached rates,
-    /// else the built-in fallback table, so the timeline always has exactly one entry.
+    /// RateProvider never throws. It returns live rates, else the last good cached rates, else the
+    /// built-in fallback table, so the timeline always has at least one entry, even offline.
     func timeline(for configuration: CurrencyConfigurationIntent, in context: Context) async -> Timeline<CurrencyEntry> {
         let now = Date()
         let table = await RateProvider.loadRates(
@@ -38,13 +42,12 @@ struct CurrencyProvider: AppIntentTimelineProvider {
             cache: FileRateCache(fileURL: Self.cacheFileURL),
             now: now
         )
-        let entry = CurrencyEntry(
-            date: now,
-            table: table,
-            from: configuration.from.currency,
-            to: configuration.to.currency
-        )
-        return Timeline(entries: [entry], policy: .after(now.addingTimeInterval(Self.refreshInterval)))
+        let source = configuration.from.currency
+        let target = configuration.to.currency
+        let entries = stride(from: 0.0, to: Self.refreshInterval, by: Self.entryInterval).map { offset in
+            CurrencyEntry(date: now.addingTimeInterval(offset), table: table, from: source, to: target)
+        }
+        return Timeline(entries: entries, policy: .after(now.addingTimeInterval(Self.refreshInterval)))
     }
 
     /// The widget has no App Group, so it keeps its own copy of the last good rates in its caches directory.
