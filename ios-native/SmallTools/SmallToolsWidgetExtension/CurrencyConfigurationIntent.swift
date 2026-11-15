@@ -1,9 +1,16 @@
 import AppIntents
+import WidgetKit
 
 /// Currencies offered in the widget's From and To pickers. The raw values are ISO codes.
 /// `currency` maps each case to the CurrencyCore type used for all rate math.
 enum CurrencyOption: String, AppEnum {
-    case usd, eur, gbp, twd, jpy, cny, cad
+    case usd = "USD"
+    case eur = "EUR"
+    case gbp = "GBP"
+    case twd = "TWD"
+    case jpy = "JPY"
+    case cny = "CNY"
+    case cad = "CAD"
 
     static var typeDisplayRepresentation: TypeDisplayRepresentation = "Currency"
 
