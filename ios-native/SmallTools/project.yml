@@ -18,6 +18,8 @@ targets:
         CFBundleShortVersionString: $(MARKETING_VERSION)
         CFBundleVersion: $(CURRENT_PROJECT_VERSION)
         ITSAppUsesNonExemptEncryption: false
+        NSCameraUsageDescription: Tools can use the camera to take photos, such as scanning text in the Pinyin Reader.
+        NSPhotoLibraryUsageDescription: Tools can use photos from your library, such as scanning text in the Pinyin Reader.
         UILaunchScreen: {}
         CFBundleURLTypes:
           - CFBundleTypeRole: Editor
