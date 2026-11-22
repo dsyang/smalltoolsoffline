@@ -152,6 +152,14 @@ The WebView used to display tools must have:
 - Debug/inspection enabled (for development).
 - Scroll bounce disabled (content should not overscroll).
 - Transparent/clear background.
+- File upload support: `<input type="file">` must open a picker offering both the camera ("Take Photo") and the photo library/files, and deliver the chosen file back to the page. Cancelling the picker must leave the input usable.
+
+### Permissions
+
+Tools may request camera and photo access through file inputs, so the app must declare:
+
+- **iOS:** `NSCameraUsageDescription` and `NSPhotoLibraryUsageDescription` in Info.plist (missing keys crash the app when the camera is opened).
+- **Android:** a `FileProvider` (authority `${applicationId}.fileprovider`, sharing `cache/camera/`) so the system camera app can write the captured photo. No `CAMERA` permission is declared, since the app goes through the system camera app via `ACTION_IMAGE_CAPTURE`.
 
 ### WebView Pool
 
