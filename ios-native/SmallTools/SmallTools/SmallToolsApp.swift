@@ -66,15 +66,18 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
     }
 }
 
+@MainActor
 final class SceneDelegate: NSObject, UIWindowSceneDelegate {
     func windowScene(
         _ windowScene: UIWindowScene,
-        performActionFor shortcutItem: UIApplicationShortcutItem
-    ) async -> Bool {
-        guard let slug = QuickActions.slug(for: shortcutItem) else { return false }
-        if let appDelegate = await UIApplication.shared.delegate as? AppDelegate {
-            await MainActor.run { appDelegate.pendingShortcutSlug = slug }
+        performActionFor shortcutItem: UIApplicationShortcutItem,
+        completionHandler: @escaping (Bool) -> Void
+    ) {
+        guard let slug = QuickActions.slug(for: shortcutItem) else {
+            completionHandler(false)
+            return
         }
-        return true
+        (UIApplication.shared.delegate as? AppDelegate)?.pendingShortcutSlug = slug
+        completionHandler(true)
     }
 }
